@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B5C04FC29DDFF17001674B3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5C04FB29DDFF17001674B3 /* MultiSlider */; };
+		8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */; };
 		8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603D929DD8EAB0072A923 /* AcmeMobile_iOSApp.swift */; };
 		8B6603DC29DD8EAB0072A923 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603DB29DD8EAB0072A923 /* ContentView.swift */; };
 		8B6603DE29DD8EAE0072A923 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B6603DD29DD8EAE0072A923 /* Assets.xcassets */; };
@@ -38,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
 		8B6603D629DD8EAB0072A923 /* AcmeMobile-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AcmeMobile-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B6603D929DD8EAB0072A923 /* AcmeMobile_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcmeMobile_iOSApp.swift; sourceTree = "<group>"; };
 		8B6603DB29DD8EAB0072A923 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B5C04FC29DDFF17001674B3 /* MultiSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +113,7 @@
 				8B6603DB29DD8EAB0072A923 /* ContentView.swift */,
 				8B6603DD29DD8EAE0072A923 /* Assets.xcassets */,
 				8B6603DF29DD8EAE0072A923 /* Preview Content */,
+				8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */,
 			);
 			path = "AcmeMobile-iOS";
 			sourceTree = "<group>";
@@ -179,6 +184,9 @@
 			dependencies = (
 			);
 			name = "AcmeMobile-iOS";
+			packageProductDependencies = (
+				8B5C04FB29DDFF17001674B3 /* MultiSlider */,
+			);
 			productName = "AcmeMobile-iOS";
 			productReference = 8B6603D629DD8EAB0072A923 /* AcmeMobile-iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -251,6 +259,9 @@
 				Base,
 			);
 			mainGroup = 8B6603CD29DD8EAB0072A923;
+			packageReferences = (
+				8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */,
+			);
 			productRefGroup = 8B6603D729DD8EAB0072A923 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -297,6 +308,7 @@
 				8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */,
 				8B6603DC29DD8EAB0072A923 /* ContentView.swift in Sources */,
 				8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */,
+				8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */,
 				8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */,
 				8B9BED8429DDB4EC00E7C0A5 /* SharedViews.swift in Sources */,
 			);
@@ -623,6 +635,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yonat/MultiSlider.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8B5C04FB29DDFF17001674B3 /* MultiSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */;
+			productName = MultiSlider;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8B6603CE29DD8EAB0072A923 /* Project object */;
 }

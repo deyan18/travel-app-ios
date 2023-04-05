@@ -58,13 +58,20 @@ func customTitle(text: String, foregroundColor: Color = .black) -> some View {
 
 }
 
-func tripItem(origin: String, destination: String, price: String, startDate: String, endDate: String, imageURL: String) -> some View {
+func tripItem(origin: String, destination: String, price: String, startDate: String, endDate: String, imageURL: String, isCompactOn: Binding<Bool>) -> some View {
     VStack{
         AsyncImage(url: URL(string: imageURL))
         { image in
             image.resizable()
         } placeholder: {
-            ProgressView()
+
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .frame(maxWidth: .infinity, maxHeight: 200)
+                .foregroundColor(.gray.opacity(0.1))
+                .overlay {
+                    ProgressView()
+                }
+
         }
         .aspectRatio(contentMode: .fill)
         .frame(maxWidth: .infinity, maxHeight: 200)
@@ -78,26 +85,44 @@ func tripItem(origin: String, destination: String, price: String, startDate: Str
                 .fontWeight(.light)
             Text(destination)
                 .font(.callout)
-            Spacer()
 
-            Text(price)
-                .fontWeight(.bold)
+            if !isCompactOn.wrappedValue {
+                Spacer()
 
-            Image(systemName: "bookmark")
+                Text(price)
+                    .fontWeight(.bold)
+
+                Image(systemName: "bookmark")
+            }
+
         }
 
         HStack(alignment: .bottom, spacing: 4) {
 
             Text(startDate)
-                .font(.footnote)
+                .font(isCompactOn.wrappedValue ? .caption: .footnote)
             Text("-")
                 .font(.caption)
                 .fontWeight(.light)
             Text(endDate)
-                .font(.footnote)
+                .font(isCompactOn.wrappedValue ? .caption: .footnote)
 
-            Spacer()
+            if !isCompactOn.wrappedValue {
+                Spacer()
+            }
+
         }
+
+        if isCompactOn.wrappedValue {
+            HStack(alignment: .bottom, spacing: 4) {
+                Text(price)
+                    .fontWeight(.bold)
+
+                Image(systemName: "bookmark")
+            }
+        }
+
+
     }
 }
 
