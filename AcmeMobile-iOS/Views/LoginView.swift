@@ -7,10 +7,21 @@
 
 import SwiftUI
 
+enum LoginViewState {
+    case logIn
+    case signUp
+    case forgotPassword
+}
+
 struct LoginView: View {
     
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @State private var email = ""
+    @State private var password = ""
+    @State private var confirmPassword = ""
+    @State private var showSignUp = false
+    @State private var loginViewState: LoginViewState = .logIn
+    private var textFieldBgColor = Color.white.opacity(0.7)
+    
     
     var body: some View {
         ZStack{
@@ -19,91 +30,88 @@ struct LoginView: View {
                 Image("LogoWhite")
                     .resizable()
                     .frame(width: 100, height: 100)
-                Text("Log In")
+                Text(loginViewState == .logIn ? "Log In" : loginViewState == .signUp ? "Register" : "Forgot Password")
                     .font(.largeTitle)
                     .fontDesign(.rounded)
                     .foregroundColor(.white)
                     .fontWeight(.bold)
                     .padding(.bottom, 30)
                 
-                TextField("Email", text: $email)
-                    .padding()
-                    .background(Color.white.opacity(0.7))
-                    .cornerRadius(10)
-                    .padding(.bottom, 20)
+                customTextField(title: "Email", text: $email, backgroundColor: textFieldBgColor)
                 
-                SecureField("Password", text: $password)
-                    .padding()
-                    .background(Color.white.opacity(0.7))
-                    .cornerRadius(10)
-                
-                
-                Button(action: {
-                    // Handle forgot password action
-                }) {
-                    Text("Forgot your password?")
-                        .foregroundColor(.white)
-                        .underline()
-                }.padding(.bottom, 20)
-                
-                
-                
-                
-                Button(action: {
-                    // Perform login action
-                }) {
-                    Text("Log In")
-                        .font(.headline)
-                        .foregroundColor(.blue)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(15.0)
-                }
-                
-                
-                
-                HStack{
-                    Button(action: {
+                switch loginViewState {
+                case .logIn:
+                    customTextField(title: "Password", text: $password, backgroundColor: textFieldBgColor)
+                    forgotPassword
+                    customButton(title: "Log In") {
                         // Perform login action
-                    }) {
-                        Text("Google")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(15.0)
                     }
-                    Button(action: {
+                case .signUp:
+                    customTextField(title: "Password", text: $password, backgroundColor: textFieldBgColor)
+                    customTextField(title: "Confirm Password", text: $confirmPassword, backgroundColor: textFieldBgColor)
+                    customButton(title: "Sign Up") {
                         // Perform login action
-                    }) {
-                        Text("Sign Up")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(15.0)
+                    }
+                case .forgotPassword:
+                    customButton(title: "Send Email") {
+                        // Perform login action
                     }
                 }
-                .padding(.top, 40)
                 
-                
+                bottomButtons
                 
             }.padding(35)
             
         }
         .frame(maxHeight: .infinity)
         .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [.accentColor, .blue]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                
-                .edgesIgnoringSafeArea(.all))
+            LinearGradient(
+                gradient: Gradient(colors: [.accentColor, .blue]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            
+            .edgesIgnoringSafeArea(.all))
         
+    }
+    
+    var bottomButtons: some View{
+        HStack{
+            customButton(title: "Google") {
+                // Perform login action
+            }
+            switch loginViewState {
+            case .logIn:
+                customButton(title: "Sign Up") {
+                    withAnimation {
+                        loginViewState = .signUp
+                    }
+                    
+                }
+            case .signUp, .forgotPassword:
+                customButton(title: "Log In") {
+                    withAnimation {
+                        loginViewState = .logIn
+                    }
+                    
+                }
+                
+            }}
+        .padding(.top, 40)
+    }
+    
+    
+    var forgotPassword: some View{
+        Button(action: {
+            withAnimation {
+                loginViewState = .forgotPassword
+            }
+            
+        }) {
+            Text("Forgot your password?")
+                .foregroundColor(.white)
+                .underline()
+        }.padding(.bottom, 20)
     }
 }
 
