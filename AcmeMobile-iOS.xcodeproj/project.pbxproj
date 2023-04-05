@@ -14,6 +14,8 @@
 		8B6603EB29DD8EAF0072A923 /* AcmeMobile_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603EA29DD8EAF0072A923 /* AcmeMobile_iOSTests.swift */; };
 		8B6603F529DD8EAF0072A923 /* AcmeMobile_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603F429DD8EAF0072A923 /* AcmeMobile_iOSUITests.swift */; };
 		8B6603F729DD8EAF0072A923 /* AcmeMobile_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603F629DD8EAF0072A923 /* AcmeMobile_iOSUITestsLaunchTests.swift */; };
+		8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */; };
+		8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8129DD9CD300E7C0A5 /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		8B6603F029DD8EAF0072A923 /* AcmeMobile-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AcmeMobile-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B6603F429DD8EAF0072A923 /* AcmeMobile_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcmeMobile_iOSUITests.swift; sourceTree = "<group>"; };
 		8B6603F629DD8EAF0072A923 /* AcmeMobile_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcmeMobile_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		8B9BED8129DD9CD300E7C0A5 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,9 @@
 		8B6603D829DD8EAB0072A923 /* AcmeMobile-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				8B9BED7E29DD92C000E7C0A5 /* ViewModels */,
+				8B9BED7D29DD92B900E7C0A5 /* Models */,
+				8B9BED7C29DD92B200E7C0A5 /* Views */,
 				8B6603D929DD8EAB0072A923 /* AcmeMobile_iOSApp.swift */,
 				8B6603DB29DD8EAB0072A923 /* ContentView.swift */,
 				8B6603DD29DD8EAE0072A923 /* Assets.xcassets */,
@@ -125,6 +132,29 @@
 				8B6603F629DD8EAF0072A923 /* AcmeMobile_iOSUITestsLaunchTests.swift */,
 			);
 			path = "AcmeMobile-iOSUITests";
+			sourceTree = "<group>";
+		};
+		8B9BED7C29DD92B200E7C0A5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */,
+				8B9BED8129DD9CD300E7C0A5 /* MainView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8B9BED7D29DD92B900E7C0A5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8B9BED7E29DD92C000E7C0A5 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +287,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */,
+				8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */,
 				8B6603DC29DD8EAB0072A923 /* ContentView.swift in Sources */,
 				8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */,
 			);
