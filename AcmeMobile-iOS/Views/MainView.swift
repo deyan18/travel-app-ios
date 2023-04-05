@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct MainView: View {
+    @State private var isLoggedIn = true
     var body: some View {
-        LoginView()
+        if isLoggedIn {
+            HomeView()
+        }else{
+            LoginView()
+        }
+        
     }
 }
 

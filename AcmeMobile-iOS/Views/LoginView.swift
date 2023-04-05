@@ -30,11 +30,7 @@ struct LoginView: View {
                 Image("LogoWhite")
                     .resizable()
                     .frame(width: 100, height: 100)
-                Text(loginViewState == .logIn ? "Log In" : loginViewState == .signUp ? "Register" : "Forgot Password")
-                    .font(.largeTitle)
-                    .fontDesign(.rounded)
-                    .foregroundColor(.white)
-                    .fontWeight(.bold)
+                customTitle(text: loginViewState == .logIn ? "Log In" : loginViewState == .signUp ? "Register" : "Forgot Password", foregroundColor: .white)
                     .padding(.bottom, 30)
                 
                 customTextField(title: "Email", text: $email, backgroundColor: textFieldBgColor)

@@ -17,6 +17,7 @@
 		8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */; };
 		8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8129DD9CD300E7C0A5 /* MainView.swift */; };
 		8B9BED8429DDB4EC00E7C0A5 /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */; };
+		8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8529DDCD3E00E7C0A5 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8B9BED8129DD9CD300E7C0A5 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViews.swift; sourceTree = "<group>"; };
+		8B9BED8529DDCD3E00E7C0A5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 				8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */,
 				8B9BED8129DD9CD300E7C0A5 /* MainView.swift */,
 				8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */,
+				8B9BED8529DDCD3E00E7C0A5 /* HomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */,
 				8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */,
 				8B6603DC29DD8EAB0072A923 /* ContentView.swift in Sources */,
+				8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */,
 				8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */,
 				8B9BED8429DDB4EC00E7C0A5 /* SharedViews.swift in Sources */,
 			);

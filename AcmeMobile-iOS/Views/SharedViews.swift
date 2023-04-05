@@ -49,4 +49,56 @@ func customSecureField(title: String, text: Binding<String>, backgroundColor: Co
         .cornerRadius(10)
 }
 
-// add more reusable functions here
+func customTitle(text: String, foregroundColor: Color = .black) -> some View {
+    Text(text)
+        .font(.largeTitle)
+        .fontDesign(.rounded)
+        .foregroundColor(foregroundColor)
+        .fontWeight(.bold)
+
+}
+
+func tripItem(origin: String, destination: String, price: String, startDate: String, endDate: String, imageURL: String) -> some View {
+    VStack{
+        AsyncImage(url: URL(string: imageURL))
+        { image in
+            image.resizable()
+        } placeholder: {
+            ProgressView()
+        }
+        .aspectRatio(contentMode: .fill)
+        .frame(maxWidth: .infinity, maxHeight: 200)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+
+        HStack(alignment: .bottom, spacing: 4) {
+            Text(origin)
+                .font(.callout)
+            Text("to")
+                .font(.caption)
+                .fontWeight(.light)
+            Text(destination)
+                .font(.callout)
+            Spacer()
+
+            Text(price)
+                .fontWeight(.bold)
+
+            Image(systemName: "bookmark")
+        }
+
+        HStack(alignment: .bottom, spacing: 4) {
+
+            Text(startDate)
+                .font(.footnote)
+            Text("-")
+                .font(.caption)
+                .fontWeight(.light)
+            Text(endDate)
+                .font(.footnote)
+
+            Spacer()
+        }
+    }
+}
+
+
