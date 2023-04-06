@@ -20,17 +20,32 @@ struct HomeView: View {
     @State private var minPrice = 0.0
     @State private var maxPrice = 0.0
     @State private var valueArray: [CGFloat] = [1.0, 2.0]
-    
+
+    private var tempTrip = Trip(
+        origin: "Madrid",
+        destination: "Seoul",
+        price: 499.00,
+        startDate: "April 5 2023",
+        endDate: "April 20 2023",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur dignissim vestibulum. Praesent libero risus, rhoncus eu pharetra sed, feugiat efficitur mi. Donec rhoncus urna ac purus lacinia dapibus. Praesent interdum mollis ornare. Maecenas a nulla eu nulla condimentum semper. Orci",
+        imageURL: "https://cdn.britannica.com/57/75757-050-122EC2ED/Changgyong-Palace-background-Seoul.jpg"
+
+    )
     
 
 
     var body: some View {
+        NavigationStack{
+
+
         ZStack{
             ScrollView(){
                 LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
-                    ForEach(0..<10) { index in
-                        tripItem(origin: "Madrid", destination: "Seoul", price: "499€", startDate: "April 5 2023", endDate: "April 20 2023", imageURL: "https://cdn.britannica.com/57/75757-050-122EC2ED/Changgyong-Palace-background-Seoul.jpg", isCompactOn: $isCompactOn)
-                    }
+                        ForEach(0..<10) { index in
+                            NavigationLink(destination: TripDetailView(trip: tempTrip)) {
+                                tripItem(trip: tempTrip, isCompactOn: $isCompactOn)
+                            }.accentColor(.black)
+                        }
                 }
                 .padding(.top, 100)
 
@@ -60,6 +75,8 @@ struct HomeView: View {
                             //
                         }
                     }
+
+
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
@@ -70,8 +87,9 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showFiltersSheet) {
             FiltersSheetView
-            .presentationDetents([.fraction(0.45)])
-            .presentationDragIndicator(.visible)
+                .presentationDetents([.fraction(0.45)])
+                .presentationDragIndicator(.visible)
+        }
         }
         
     }
@@ -83,11 +101,11 @@ struct HomeView: View {
                 .fontDesign(.rounded)
                 .fontWeight(.medium)
             DatePicker(selection: $startDate, in: Date.now..., displayedComponents: .date) {
-                            Text("Start date: ")
-                        }
+                Text("Start date: ")
+            }
             DatePicker(selection: $endDate, in: startDate..., displayedComponents: .date) {
-                            Text("End date: ")
-                        }
+                Text("End date: ")
+            }
 
             HStack{
                 Text("Price range: ")

@@ -12,10 +12,16 @@ struct customButton: View {
     var backgroundColor: Color
     var foregroundColor: Color
     var action: () -> Void
+    var iconName: String
     
     var body: some View {
         Button(action: action) {
-            Text(title)
+            HStack{
+                if iconName != ""{
+                    Image(systemName: iconName)
+                }
+                Text(title)
+            }
                 .font(.headline)
                 .foregroundColor(foregroundColor)
                 .frame(maxWidth: .infinity)
@@ -25,11 +31,12 @@ struct customButton: View {
         }
     }
     
-    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .blue, action: @escaping () -> Void) {
+    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .blue,iconName: String = "", action: @escaping () -> Void ) {
         self.title = title
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
         self.action = action
+        self.iconName = iconName
     }
 }
 
@@ -58,9 +65,9 @@ func customTitle(text: String, foregroundColor: Color = .black) -> some View {
 
 }
 
-func tripItem(origin: String, destination: String, price: String, startDate: String, endDate: String, imageURL: String, isCompactOn: Binding<Bool>) -> some View {
+func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
     VStack{
-        AsyncImage(url: URL(string: imageURL))
+        AsyncImage(url: URL(string: trip.imageURL))
         { image in
             image.resizable()
         } placeholder: {
@@ -78,18 +85,18 @@ func tripItem(origin: String, destination: String, price: String, startDate: Str
         .clipShape(RoundedRectangle(cornerRadius: 10))
 
         HStack(alignment: .bottom, spacing: 4) {
-            Text(origin)
+            Text(trip.origin)
                 .font(.callout)
             Text("to")
                 .font(.caption)
                 .fontWeight(.light)
-            Text(destination)
+            Text(trip.destination)
                 .font(.callout)
 
             if !isCompactOn.wrappedValue {
                 Spacer()
 
-                Text(price)
+                Text(FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
                     .fontWeight(.bold)
 
                 Image(systemName: "bookmark")
@@ -99,12 +106,12 @@ func tripItem(origin: String, destination: String, price: String, startDate: Str
 
         HStack(alignment: .bottom, spacing: 4) {
 
-            Text(startDate)
+            Text(trip.startDate)
                 .font(isCompactOn.wrappedValue ? .caption: .footnote)
             Text("-")
                 .font(.caption)
                 .fontWeight(.light)
-            Text(endDate)
+            Text(trip.endDate)
                 .font(isCompactOn.wrappedValue ? .caption: .footnote)
 
             if !isCompactOn.wrappedValue {
@@ -115,7 +122,7 @@ func tripItem(origin: String, destination: String, price: String, startDate: Str
 
         if isCompactOn.wrappedValue {
             HStack(alignment: .bottom, spacing: 4) {
-                Text(price)
+                Text(FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
                     .fontWeight(.bold)
 
                 Image(systemName: "bookmark")
