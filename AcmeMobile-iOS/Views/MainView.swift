@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var isLoggedIn = false
+    @EnvironmentObject var vm: MainViewModel
     var body: some View {
-        if isLoggedIn {
+        if vm.signedIn {
             TabView {
                 HomeView()
                     .tabItem {

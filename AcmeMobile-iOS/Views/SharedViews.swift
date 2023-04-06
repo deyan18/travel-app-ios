@@ -41,11 +41,12 @@ struct customButton: View {
 }
 
 
-func customTextField(title: String, text: Binding<String>, backgroundColor: Color? = Color.gray.opacity(0.7)) -> some View {
+func customTextField(title: String, text: Binding<String>, isLowerCase: Bool = false, backgroundColor: Color? = Color.gray.opacity(0.7)) -> some View {
     TextField(title, text: text)
         .padding()
         .background(backgroundColor)
         .cornerRadius(10)
+        .autocapitalization(isLowerCase ? .none : .words )
 }
 
 
@@ -134,3 +135,43 @@ func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
 }
 
 
+struct UploadImageButton: View {
+    @State var showImagePicker = false
+    @Binding var image: UIImage
+    var url = ""
+
+    var body: some View {
+        Button {
+            showImagePicker.toggle()
+        } label: {
+            if url == "" {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .background(Image(systemName: "camera.fill").foregroundColor(.primary))
+                    .background(.regularMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 100))
+
+            } else {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .background(Image(systemName: "camera.fill").foregroundColor(.primary))
+                    .background(
+                        AsyncImage(url: URL(string: url))
+                        { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                        }
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 100))
+            }
+        }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
+        }
+    }
+}

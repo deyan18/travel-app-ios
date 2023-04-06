@@ -26,6 +26,10 @@
 		8B6603EB29DD8EAF0072A923 /* AcmeMobile_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603EA29DD8EAF0072A923 /* AcmeMobile_iOSTests.swift */; };
 		8B6603F529DD8EAF0072A923 /* AcmeMobile_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603F429DD8EAF0072A923 /* AcmeMobile_iOSUITests.swift */; };
 		8B6603F729DD8EAF0072A923 /* AcmeMobile_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603F629DD8EAF0072A923 /* AcmeMobile_iOSUITestsLaunchTests.swift */; };
+		8B9554F529DF32710012DA14 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9554F429DF32710012DA14 /* ImagePicker.swift */; };
+		8B9554F729DF3B790012DA14 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9554F629DF3B790012DA14 /* FirebaseManager.swift */; };
+		8B9554F929DF3BE50012DA14 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9554F829DF3BE50012DA14 /* MainViewModel.swift */; };
+		8B9554FB29DF3C920012DA14 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9554FA29DF3C920012DA14 /* LoadingView.swift */; };
 		8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */; };
 		8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8129DD9CD300E7C0A5 /* MainView.swift */; };
 		8B9BED8429DDB4EC00E7C0A5 /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */; };
@@ -67,6 +71,10 @@
 		8B6603F029DD8EAF0072A923 /* AcmeMobile-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AcmeMobile-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B6603F429DD8EAF0072A923 /* AcmeMobile_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcmeMobile_iOSUITests.swift; sourceTree = "<group>"; };
 		8B6603F629DD8EAF0072A923 /* AcmeMobile_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcmeMobile_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8B9554F429DF32710012DA14 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		8B9554F629DF3B790012DA14 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		8B9554F829DF3BE50012DA14 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		8B9554FA29DF3C920012DA14 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		8B9BED7F29DD92E800E7C0A5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8B9BED8129DD9CD300E7C0A5 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViews.swift; sourceTree = "<group>"; };
@@ -134,6 +142,7 @@
 		8B6603D829DD8EAB0072A923 /* AcmeMobile-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				8B9554F329DF32650012DA14 /* Extensions */,
 				8B26205329DEE7AA00539B88 /* GoogleService-Info.plist */,
 				8B9BED7E29DD92C000E7C0A5 /* ViewModels */,
 				8B9BED7D29DD92B900E7C0A5 /* Models */,
@@ -171,6 +180,14 @@
 			path = "AcmeMobile-iOSUITests";
 			sourceTree = "<group>";
 		};
+		8B9554F329DF32650012DA14 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8B9554F429DF32710012DA14 /* ImagePicker.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		8B9BED7C29DD92B200E7C0A5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +198,7 @@
 				8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */,
 				8B26204F29DEE4EB00539B88 /* ProfileView.swift */,
 				8B26205129DEE57100539B88 /* BookmarksView.swift */,
+				8B9554FA29DF3C920012DA14 /* LoadingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -198,6 +216,8 @@
 			isa = PBXGroup;
 			children = (
 				8B26205829DEE9AD00539B88 /* UserViewModel.swift */,
+				8B9554F629DF3B790012DA14 /* FirebaseManager.swift */,
+				8B9554F829DF3BE50012DA14 /* MainViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -344,9 +364,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B9554F529DF32710012DA14 /* ImagePicker.swift in Sources */,
 				8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */,
+				8B9554F729DF3B790012DA14 /* FirebaseManager.swift in Sources */,
 				8B26205929DEE9AD00539B88 /* UserViewModel.swift in Sources */,
 				8B26205029DEE4EB00539B88 /* ProfileView.swift in Sources */,
+				8B9554FB29DF3C920012DA14 /* LoadingView.swift in Sources */,
+				8B9554F929DF3BE50012DA14 /* MainViewModel.swift in Sources */,
 				8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */,
 				8B26204E29DECEEC00539B88 /* TripModel.swift in Sources */,
 				8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */,

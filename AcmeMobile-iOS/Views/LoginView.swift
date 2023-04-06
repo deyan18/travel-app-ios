@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import FirebaseStorage
 
 enum LoginViewState {
     case logIn
@@ -17,6 +18,8 @@ enum LoginViewState {
 
 struct LoginView: View {
 
+    @EnvironmentObject var vm: MainViewModel
+
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
@@ -25,37 +28,37 @@ struct LoginView: View {
     @State private var loginViewState: LoginViewState = .logIn
     @State private var showError = false
     @State private var errorMessage = ""
+    @State var img: UIImage = UIImage(named: "EmptyImage")!
     private var textFieldBgColor = Color.white.opacity(0.7)
     
     
     var body: some View {
         ZStack{
             VStack {
-                Image("LogoWhite")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                customTitle(text: loginViewState == .logIn ? "Log In" : loginViewState == .signUp ? "Register" : "Forgot Password", foregroundColor: .white)
-                    .padding(.bottom, 30)
-                
+                if loginViewState != .signUp {
+                    Image("LogoWhite")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                }
 
+                customTitle(text: loginViewState == .logIn ? "Log In" : loginViewState == .signUp ? "Register" : "Forgot Password", foregroundColor: .white)
+                    .padding(.bottom,loginViewState == .signUp ? 10 : 30)
                 
                 switch loginViewState {
                 case .logIn:
-                    customTextField(title: "Email", text: $email, backgroundColor: textFieldBgColor)
-                    customTextField(title: "Password", text: $password, backgroundColor: textFieldBgColor)
+                    emailField
+                    passwordField
                     forgotPassword
                     customButton(title: "Log In", action: loginUser)
                 case .signUp:
-
+                    UploadImageButton(image: $img)
                     customTextField(title: "Name", text: $name, backgroundColor: textFieldBgColor)
-                    customTextField(title: "Email", text: $email, backgroundColor: textFieldBgColor)
-                    customSecureField(title: "Password", text: $password, backgroundColor: textFieldBgColor)
+                    emailField
+                    passwordField
                     customSecureField(title: "Confirm Password", text: $confirmPassword, backgroundColor: textFieldBgColor)
-                    customButton(title: "Sign Up") {
-                        // Perform login action
-                    }
+                    customButton(title: "Sign Up", action: registerUser)
                 case .forgotPassword:
-                    customTextField(title: "Email", text: $email, backgroundColor: textFieldBgColor)
+                    emailField
                     customButton(title: "Send Email", action:{})
                 }
                 
@@ -74,6 +77,14 @@ struct LoginView: View {
             
             .edgesIgnoringSafeArea(.all))
         
+    }
+
+    var emailField: some View{
+        customTextField(title: "Email", text: $email, isLowerCase: true, backgroundColor: textFieldBgColor)
+    }
+
+    var passwordField: some View{
+        customSecureField(title: "Password", text: $password, backgroundColor: textFieldBgColor)
     }
     
     var bottomButtons: some View{
@@ -121,6 +132,7 @@ struct LoginView: View {
             Task{
                 do{
                     try await Auth.auth().signIn(withEmail: email, password: password)
+                    vm.signedIn = true
                 }catch{
                     await setError(error)
                 }
@@ -147,10 +159,20 @@ struct LoginView: View {
                 do{
                     try await Auth.auth().createUser(withEmail: email, password: password)
                     guard let userUID = Auth.auth().currentUser?.uid else {return}
-                    let user = User(UID: userUID, email: email, name: name)
+                    let storageRef = Storage.storage().reference().child("ProfilePictures").child(userUID)
+                    guard let imgData = img.jpegData(compressionQuality: 0.8) else { return }
+                    let _ = try await storageRef.putDataAsync(imgData)
+                    let imgURL = try await storageRef.downloadURL()
+                    let user = User(UID: userUID, email: email, name: name, pfpURL: imgURL.absoluteString)
 
-                    try Firestore.firestore().collection("Users").document(userUID).setData(from: user)
+
+                    try Firestore.firestore().collection("Users").document(userUID).setData(from: user, completion: { error in
+                        if error == nil{
+                            vm.signedIn = true
+                        }
+                    })
                 }catch{
+                    try await Auth.auth().currentUser?.delete()
                     await setError(error)
                 }
             }

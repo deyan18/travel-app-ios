@@ -10,13 +10,20 @@ import Firebase
 
 @main
 struct AcmeMobile_iOSApp: App {
+    @StateObject var vm: MainViewModel = MainViewModel()
+
     init(){
-        FirebaseApp.configure()
+        if FirebaseManager.shared.auth.currentUser != nil{
+            //vm.fetchCurrentUser()
+            vm.signedIn = true
+        }
+
     }
 
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environmentObject(vm)
         }
     }
 }

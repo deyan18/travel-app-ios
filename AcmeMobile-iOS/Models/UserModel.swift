@@ -13,11 +13,13 @@ struct User: Identifiable, Codable{
     var UID: String
     var email: String
     var name: String
+    var pfpURL: String
 
     enum CodingKeys: CodingKey{
         case id
         case UID
         case email
         case name
+        case pfpURL
     }
 }
