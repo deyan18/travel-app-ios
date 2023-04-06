@@ -10,6 +10,13 @@
 		8B26204E29DECEEC00539B88 /* TripModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26204D29DECEEC00539B88 /* TripModel.swift */; };
 		8B26205029DEE4EB00539B88 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26204F29DEE4EB00539B88 /* ProfileView.swift */; };
 		8B26205229DEE57100539B88 /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26205129DEE57100539B88 /* BookmarksView.swift */; };
+		8B26205429DEE7AA00539B88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B26205329DEE7AA00539B88 /* GoogleService-Info.plist */; };
+		8B26205729DEE94700539B88 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205629DEE94700539B88 /* FirebaseAuth */; };
+		8B26205929DEE9AD00539B88 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26205829DEE9AD00539B88 /* UserViewModel.swift */; };
+		8B26205C29DEF42000539B88 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205B29DEF42000539B88 /* FirebaseFirestore */; };
+		8B26205E29DEF42000539B88 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205D29DEF42000539B88 /* FirebaseFirestoreSwift */; };
+		8B26206029DEF42000539B88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205F29DEF42000539B88 /* FirebaseStorage */; };
+		8B26206229DEF4BD00539B88 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26206129DEF4BD00539B88 /* UserModel.swift */; };
 		8B5C04FC29DDFF17001674B3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5C04FB29DDFF17001674B3 /* MultiSlider */; };
 		8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */; };
 		8B5C050029DE07B7001674B3 /* TripDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */; };
@@ -46,6 +53,9 @@
 		8B26204D29DECEEC00539B88 /* TripModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripModel.swift; sourceTree = "<group>"; };
 		8B26204F29DEE4EB00539B88 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		8B26205129DEE57100539B88 /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
+		8B26205329DEE7AA00539B88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8B26205829DEE9AD00539B88 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		8B26206129DEF4BD00539B88 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
 		8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripDetailView.swift; sourceTree = "<group>"; };
 		8B6603D629DD8EAB0072A923 /* AcmeMobile-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AcmeMobile-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +79,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B5C04FC29DDFF17001674B3 /* MultiSlider in Frameworks */,
+				8B26205729DEE94700539B88 /* FirebaseAuth in Frameworks */,
+				8B26205C29DEF42000539B88 /* FirebaseFirestore in Frameworks */,
+				8B26206029DEF42000539B88 /* FirebaseStorage in Frameworks */,
+				8B26205E29DEF42000539B88 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +103,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B26205A29DEF42000539B88 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8B6603CD29DD8EAB0072A923 = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +117,7 @@
 				8B6603E929DD8EAF0072A923 /* AcmeMobile-iOSTests */,
 				8B6603F329DD8EAF0072A923 /* AcmeMobile-iOSUITests */,
 				8B6603D729DD8EAB0072A923 /* Products */,
+				8B26205A29DEF42000539B88 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +134,7 @@
 		8B6603D829DD8EAB0072A923 /* AcmeMobile-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				8B26205329DEE7AA00539B88 /* GoogleService-Info.plist */,
 				8B9BED7E29DD92C000E7C0A5 /* ViewModels */,
 				8B9BED7D29DD92B900E7C0A5 /* Models */,
 				8B9BED7C29DD92B200E7C0A5 /* Views */,
@@ -166,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				8B26204D29DECEEC00539B88 /* TripModel.swift */,
+				8B26206129DEF4BD00539B88 /* UserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -173,6 +197,7 @@
 		8B9BED7E29DD92C000E7C0A5 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				8B26205829DEE9AD00539B88 /* UserViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -195,6 +220,10 @@
 			name = "AcmeMobile-iOS";
 			packageProductDependencies = (
 				8B5C04FB29DDFF17001674B3 /* MultiSlider */,
+				8B26205629DEE94700539B88 /* FirebaseAuth */,
+				8B26205B29DEF42000539B88 /* FirebaseFirestore */,
+				8B26205D29DEF42000539B88 /* FirebaseFirestoreSwift */,
+				8B26205F29DEF42000539B88 /* FirebaseStorage */,
 			);
 			productName = "AcmeMobile-iOS";
 			productReference = 8B6603D629DD8EAB0072A923 /* AcmeMobile-iOS.app */;
@@ -270,6 +299,7 @@
 			mainGroup = 8B6603CD29DD8EAB0072A923;
 			packageReferences = (
 				8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */,
+				8B26205529DEE94700539B88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 8B6603D729DD8EAB0072A923 /* Products */;
 			projectDirPath = "";
@@ -289,6 +319,7 @@
 			files = (
 				8B6603E129DD8EAE0072A923 /* Preview Assets.xcassets in Resources */,
 				8B6603DE29DD8EAE0072A923 /* Assets.xcassets in Resources */,
+				8B26205429DEE7AA00539B88 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */,
+				8B26205929DEE9AD00539B88 /* UserViewModel.swift in Sources */,
 				8B26205029DEE4EB00539B88 /* ProfileView.swift in Sources */,
 				8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */,
 				8B26204E29DECEEC00539B88 /* TripModel.swift in Sources */,
@@ -322,6 +354,7 @@
 				8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */,
 				8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */,
 				8B26205229DEE57100539B88 /* BookmarksView.swift in Sources */,
+				8B26206229DEF4BD00539B88 /* UserModel.swift in Sources */,
 				8B9BED8429DDB4EC00E7C0A5 /* SharedViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -649,6 +682,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8B26205529DEE94700539B88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/yonat/MultiSlider.git";
@@ -660,6 +701,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8B26205629DEE94700539B88 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B26205529DEE94700539B88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		8B26205B29DEF42000539B88 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B26205529DEE94700539B88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		8B26205D29DEF42000539B88 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B26205529DEE94700539B88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		8B26205F29DEF42000539B88 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B26205529DEE94700539B88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		8B5C04FB29DDFF17001674B3 /* MultiSlider */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */;
