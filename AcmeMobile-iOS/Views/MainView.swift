@@ -11,7 +11,20 @@ struct MainView: View {
     @State private var isLoggedIn = true
     var body: some View {
         if isLoggedIn {
-            HomeView()
+            TabView {
+                HomeView()
+                    .tabItem {
+                        Label("Explore", systemImage: "airplane")
+                    }
+                BookmarksView()
+                    .tabItem {
+                        Label("Bookmarks", systemImage: "bookmark")
+                    }
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage: "person")
+                    }
+            }.background(.ultraThickMaterial)
         }else{
             LoginView()
         }

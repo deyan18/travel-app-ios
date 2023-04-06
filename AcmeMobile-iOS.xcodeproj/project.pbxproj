@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8B26204E29DECEEC00539B88 /* TripModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26204D29DECEEC00539B88 /* TripModel.swift */; };
+		8B26205029DEE4EB00539B88 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26204F29DEE4EB00539B88 /* ProfileView.swift */; };
+		8B26205229DEE57100539B88 /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26205129DEE57100539B88 /* BookmarksView.swift */; };
 		8B5C04FC29DDFF17001674B3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5C04FB29DDFF17001674B3 /* MultiSlider */; };
 		8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */; };
 		8B5C050029DE07B7001674B3 /* TripDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */; };
@@ -42,6 +44,8 @@
 
 /* Begin PBXFileReference section */
 		8B26204D29DECEEC00539B88 /* TripModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripModel.swift; sourceTree = "<group>"; };
+		8B26204F29DEE4EB00539B88 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		8B26205129DEE57100539B88 /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
 		8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripDetailView.swift; sourceTree = "<group>"; };
 		8B6603D629DD8EAB0072A923 /* AcmeMobile-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AcmeMobile-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,6 +156,8 @@
 				8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */,
 				8B9BED8529DDCD3E00E7C0A5 /* HomeView.swift */,
 				8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */,
+				8B26204F29DEE4EB00539B88 /* ProfileView.swift */,
+				8B26205129DEE57100539B88 /* BookmarksView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -308,12 +314,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */,
+				8B26205029DEE4EB00539B88 /* ProfileView.swift in Sources */,
 				8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */,
 				8B26204E29DECEEC00539B88 /* TripModel.swift in Sources */,
 				8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */,
 				8B5C050029DE07B7001674B3 /* TripDetailView.swift in Sources */,
 				8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */,
 				8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */,
+				8B26205229DEE57100539B88 /* BookmarksView.swift in Sources */,
 				8B9BED8429DDB4EC00E7C0A5 /* SharedViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
