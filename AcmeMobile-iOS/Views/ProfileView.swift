@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject var vm: MainViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            profileImageView(url: vm.currentUser?.pfpURL ?? "")
+            Text(vm.currentUser?.name ?? "")
+            customButton(title: "Sign Out", backgroundColor: .orange, foregroundColor: .white) {
+                vm.signOut()
+            }
+        }
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView()
-    }
-}
+

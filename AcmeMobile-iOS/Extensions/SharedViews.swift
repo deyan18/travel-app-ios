@@ -175,3 +175,44 @@ struct UploadImageButton: View {
         }
     }
 }
+
+func tripImageView(url: String, cornerRadius: CGFloat = 15, maxHeight: CGFloat = 250) -> some View {
+    AsyncImage(url: URL(string: url))
+    { image in
+        image.resizable()
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .aspectRatio(contentMode: .fill)
+            .frame(maxWidth: .infinity, maxHeight: maxHeight)
+    } placeholder: {
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            .aspectRatio(contentMode: .fill)
+            .frame(maxWidth: .infinity, maxHeight: maxHeight)
+            .overlay {
+                ProgressView()
+            }
+
+    }
+
+}
+
+
+func profileImageView(url: String, size: CGFloat = 50) -> some View {
+    var cornerRadius: CGFloat = 100
+
+    return AsyncImage(url: URL(string: url))
+    { image in
+        image.resizable()
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .aspectRatio(contentMode: .fill)
+            .frame(width: size, height: size)
+    } placeholder: {
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            .aspectRatio(contentMode: .fill)
+            .frame(width: size, height: size)
+            .overlay {
+                ProgressView()
+            }
+
+    }
+
+}

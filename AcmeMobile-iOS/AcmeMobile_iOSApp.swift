@@ -7,23 +7,36 @@
 
 import SwiftUI
 import Firebase
+import GoogleSignIn
 
 @main
 struct AcmeMobile_iOSApp: App {
     @StateObject var vm: MainViewModel = MainViewModel()
-
-    init(){
-        if FirebaseManager.shared.auth.currentUser != nil{
-            //vm.fetchCurrentUser()
-            vm.signedIn = true
-        }
-
-    }
-
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
             MainView()
                 .environmentObject(vm)
+                .onAppear{
+                    if FirebaseManager.shared.auth.currentUser != nil{
+                        Task{
+                            await vm.fetchCurrentUser()
+
+                        }
+                        vm.signedIn = true
+                    }
+                }
         }
     }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any])
+    -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
+    }
+
 }

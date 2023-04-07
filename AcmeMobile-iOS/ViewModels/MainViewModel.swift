@@ -10,22 +10,37 @@ import Foundation
 class MainViewModel: ObservableObject {
     @Published var signedIn = false
     @Published var currentUser: User?
+    @Published var isLoading: Bool = false
+    @Published var showAlert = false
+    @Published var alertMessage = ""
 
-    /*func fetchCurrentUser() {
+    func fetchCurrentUser() async {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
 
-        FirebaseManager.shared.firestore.collection("Users")
-            .document(uid).getDocument { snapshot, err in
-                if let err = err {
-                    print("Error: ", err)
-                    //self.signOut()
-                    return
-                }
+        do{
+            let user = try await FirebaseManager.shared.firestore.collection("Users").document(uid).getDocument(as: User.self)
 
-                guard let data = snapshot?.data() else { return }
-                self.currentUser = .init(data: data)
+            await MainActor.run(body: {
+                self.currentUser = user
+            })
+        }catch{
+            
+        }
+    }
 
-                self.fetchUserDependantData()
-            }
-    }*/
+    func alertUser(_ message: String){
+        alertMessage = message
+        self.isLoading = false
+        showAlert.toggle()
+    }
+
+    func setError(_ error: Error) {
+        alertUser(error.localizedDescription)
+    }
+
+    func signOut() {
+        self.signedIn = false
+        try? FirebaseManager.shared.auth.signOut()
+    }
+
 }

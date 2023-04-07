@@ -12,29 +12,8 @@ struct TripDetailView: View {
     
     var body: some View {
         ZStack{
-
-
             ScrollView{
-                AsyncImage(url: URL(string: trip.imageURL))
-                { image in
-                    image.resizable()
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: .infinity, maxHeight: 250)
-
-                } placeholder: {
-
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: .infinity, maxHeight: 250)
-                        .overlay {
-                            ProgressView()
-                        }
-
-                }
-
+                tripImageView(url: trip.imageURL)
 
                 HStack(alignment: .bottom, spacing: 4) {
                     Text(trip.origin)

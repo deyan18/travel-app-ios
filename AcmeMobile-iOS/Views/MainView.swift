@@ -10,24 +10,31 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var vm: MainViewModel
     var body: some View {
-        if vm.signedIn {
-            TabView {
-                HomeView()
-                    .tabItem {
-                        Label("Explore", systemImage: "airplane")
-                    }
-                BookmarksView()
-                    .tabItem {
-                        Label("Bookmarks", systemImage: "bookmark")
-                    }
-                ProfileView()
-                    .tabItem {
-                        Label("Profile", systemImage: "person")
-                    }
-            }.background(.ultraThickMaterial)
-        }else{
-            LoginView()
-        }
+        ZStack{
+
+
+            if vm.signedIn {
+                TabView {
+                    HomeView()
+                        .tabItem {
+                            Label("Explore", systemImage: "airplane")
+                        }
+                    BookmarksView()
+                        .tabItem {
+                            Label("Bookmarks", systemImage: "bookmark")
+                        }
+                    ProfileView()
+                        .tabItem {
+                            Label("Profile", systemImage: "person")
+                        }
+                }.background(.ultraThickMaterial)
+            }else{
+                LoginView()
+            }
+
+            LoadingView()
+
+        }.alert(vm.alertMessage, isPresented: $vm.showAlert, actions: {})
         
     }
 }

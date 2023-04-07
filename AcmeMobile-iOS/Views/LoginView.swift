@@ -9,6 +9,8 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseStorage
+import GoogleSignIn
+import GoogleSignInSwift
 
 enum LoginViewState {
     case logIn
@@ -26,8 +28,7 @@ struct LoginView: View {
     @State private var confirmPassword = ""
     @State private var showSignUp = false
     @State private var loginViewState: LoginViewState = .logIn
-    @State private var showError = false
-    @State private var errorMessage = ""
+
     @State var img: UIImage = UIImage(named: "EmptyImage")!
     private var textFieldBgColor = Color.white.opacity(0.7)
     
@@ -39,6 +40,11 @@ struct LoginView: View {
                     Image("LogoWhite")
                         .resizable()
                         .frame(width: 100, height: 100)
+                        .onTapGesture {
+                            email = "ttest@email.com"
+                            password = "11111111"
+                            loginUser()
+                        }
                 }
 
                 customTitle(text: loginViewState == .logIn ? "Log In" : loginViewState == .signUp ? "Register" : "Forgot Password", foregroundColor: .white)
@@ -59,12 +65,13 @@ struct LoginView: View {
                     customButton(title: "Sign Up", action: registerUser)
                 case .forgotPassword:
                     emailField
-                    customButton(title: "Send Email", action:{})
+                    customButton(title: "Send Email", action: recoverPassword)
                 }
                 
                 bottomButtons
                 
             }.padding(35)
+
             
         }
         .frame(maxHeight: .infinity)
@@ -89,9 +96,7 @@ struct LoginView: View {
     
     var bottomButtons: some View{
         HStack{
-            customButton(title: "Google") {
-                // Perform login action
-            }
+
             switch loginViewState {
             case .logIn:
                 customButton(title: "Sign Up") {
@@ -101,16 +106,42 @@ struct LoginView: View {
                     
                 }
             case .signUp, .forgotPassword:
-                customButton(title: "Log In") {
+                customButton(title: "Log In", iconName: "chevron.backward") {
                     withAnimation {
                         loginViewState = .logIn
                     }
                     
                 }
                 
-            }}
-        .padding(.top, 40)
-        .alert(errorMessage, isPresented: $showError, actions: {})
+            }
+
+            customButton(title: "Google", action: {handleLogin()})
+                }
+                .padding(.top, 40)
+        
+    }
+
+    func logWithGoogle(user: GIDGoogleUser){
+        Task{
+            do{
+                guard let idToken = user.idToken?.tokenString else {return }
+                let accessToken = user.accessToken.tokenString
+
+                let credential = OAuthProvider.credential(withProviderID: idToken, accessToken: accessToken)
+
+                try await FirebaseManager.shared.auth.signIn(with: credential)
+
+                vm.signedIn = true
+
+                Task{
+                    await vm.fetchCurrentUser()
+                }
+
+
+            }catch{
+                vm.setError(error)
+            }
+        }
     }
     
     
@@ -128,32 +159,43 @@ struct LoginView: View {
     }
 
     func loginUser(){
+        vm.isLoading = true
         if validateFields() {
             Task{
                 do{
                     try await Auth.auth().signIn(withEmail: email, password: password)
                     vm.signedIn = true
+                    await vm.fetchCurrentUser()
+                    vm.isLoading = false
                 }catch{
-                    await setError(error)
+                    vm.isLoading = false
+                    vm.setError(error)
                 }
             }
         }
     }
 
     func recoverPassword(){
+        vm.isLoading = true
         if validateFields() {
             Task{
                 do{
                     try await Auth.auth().sendPasswordReset(withEmail: email)
-                    alertUser("Recovery email sent.")
+                    vm.isLoading = false
+                    vm.alertUser("Recovery email sent.")
+                    withAnimation {
+                        loginViewState = .logIn
+                    }
                 }catch{
-                    await setError(error)
+                    vm.isLoading = false
+                    vm.setError(error)
                 }
             }
         }
     }
 
     func registerUser(){
+        vm.isLoading = true
         if validateFields() {
             Task{
                 do{
@@ -168,12 +210,17 @@ struct LoginView: View {
 
                     try Firestore.firestore().collection("Users").document(userUID).setData(from: user, completion: { error in
                         if error == nil{
+                            vm.isLoading = false
                             vm.signedIn = true
+                            Task{
+                                await vm.fetchCurrentUser()
+                            }
                         }
                     })
                 }catch{
+                    vm.isLoading = false
                     try await Auth.auth().currentUser?.delete()
-                    await setError(error)
+                    vm.setError(error)
                 }
             }
         }
@@ -185,24 +232,24 @@ struct LoginView: View {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailRegex)
         if !emailPredicate.evaluate(with: email) {
-            alertUser("Please enter a valid email.")
+            vm.alertUser("Please enter a valid email.")
             return false
         }
 
 
         if loginViewState != .forgotPassword && password.count < 8 {
-            alertUser("Please enter a valid password.")
+            vm.alertUser("Please enter a valid password.")
             return false
         }
 
         if loginViewState == .signUp{
             if password != confirmPassword {
-                alertUser("Passwords do not match.")
+                vm.alertUser("Passwords do not match.")
                 return false
             }
 
             if name.count < 1 || name.count > 20{
-                alertUser("Please enter a valid name.")
+                vm.alertUser("Please enter a valid name.")
                 return false
             }
 
@@ -211,17 +258,69 @@ struct LoginView: View {
         return true
     }
 
-    func alertUser(_ message: String){
-        errorMessage = message
-        showError.toggle()
-    }
+    func handleLogin(){
 
-    func setError(_ error: Error) async{
-        await MainActor.run(body: {
-            alertUser(error.localizedDescription)
-        })
-    }
+        vm.isLoading = true
 
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+
+        GIDSignIn.sharedInstance.configuration = config
+
+
+
+        GIDSignIn.sharedInstance.signIn(withPresenting: UIApplication.shared.getRootViewController()) { user, error in
+            if let error = error {
+                vm.setError(error)
+                return
+            }
+
+            guard let idToken = user?.user.idToken else {
+                vm.isLoading = false
+                return
+            }
+
+            guard let accessToken = user?.user.accessToken else {
+                vm.isLoading = false
+                return
+            }
+
+
+
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+            
+            let config = GIDConfiguration(clientID: clientID)
+
+            GIDSignIn.sharedInstance.configuration = config
+
+            // Firebase Authentication
+            Auth.auth().signIn(with: credential) {result, err in
+                vm.isLoading = false
+                if let err = err {
+                    print(err.localizedDescription)
+                    return
+                }
+                //Displaying User Name...
+                guard let user = result?.user else {
+                    return
+                }
+                print(user.displayName ?? "Success" )
+                //updating user as logged in
+                withAnimation{
+                    vm.signedIn = true
+
+                    Task{
+                        await vm.fetchCurrentUser()
+                    }
+                }
+            }
+
+        }
+
+
+    }
 
     
 }

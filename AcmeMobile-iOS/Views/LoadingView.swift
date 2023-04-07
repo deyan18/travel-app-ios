@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct LoadingView: View {
+
+    @EnvironmentObject var vm: MainViewModel
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack{
+            if vm.isLoading{
+                Rectangle()
+                    .fill(.black.opacity(0.3))
+                    .ignoresSafeArea()
+
+                ProgressView()
+                    .padding(15)
+                    .background(.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: vm.isLoading)
     }
 }
 
-struct LoadingView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoadingView()
-    }
-}
