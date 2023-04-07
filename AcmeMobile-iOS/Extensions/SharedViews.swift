@@ -17,17 +17,24 @@ struct customButton: View {
     var body: some View {
         Button(action: action) {
             HStack{
-                if iconName != ""{
-                    Image(systemName: iconName)
+                if title == "Google"{
+                    Image("GoogleIcon")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+
+                }else if iconName != "" {
+                        Image(systemName: iconName)
                 }
-                Text(title)
+                Text(title == "Google" ? "" : title)
+
             }
-                .font(.headline)
-                .foregroundColor(foregroundColor)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(backgroundColor)
-                .cornerRadius(15.0)
+            .font(.headline)
+            .foregroundColor(foregroundColor)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(backgroundColor)
+            .cornerRadius(15.0)
+
         }
     }
     

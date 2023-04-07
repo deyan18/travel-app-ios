@@ -9,8 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseStorage
-import GoogleSignIn
-import GoogleSignInSwift
+
 
 enum LoginViewState {
     case logIn
@@ -115,36 +114,12 @@ struct LoginView: View {
                 
             }
 
-            customButton(title: "Google", action: {handleLogin()})
+            customButton(title: "Google", action: {vm.googleLogin()})
                 }
                 .padding(.top, 40)
         
     }
 
-    func logWithGoogle(user: GIDGoogleUser){
-        Task{
-            do{
-                guard let idToken = user.idToken?.tokenString else {return }
-                let accessToken = user.accessToken.tokenString
-
-                let credential = OAuthProvider.credential(withProviderID: idToken, accessToken: accessToken)
-
-                try await FirebaseManager.shared.auth.signIn(with: credential)
-
-                vm.signedIn = true
-
-                Task{
-                    await vm.fetchCurrentUser()
-                }
-
-
-            }catch{
-                vm.setError(error)
-            }
-        }
-    }
-    
-    
     var forgotPassword: some View{
         Button(action: {
             withAnimation {
@@ -207,16 +182,13 @@ struct LoginView: View {
                     let imgURL = try await storageRef.downloadURL()
                     let user = User(UID: userUID, email: email, name: name, pfpURL: imgURL.absoluteString)
 
+                    vm.saveUserData(user)
+                    vm.isLoading = false
+                    vm.signedIn = true
+                    Task{
+                        await vm.fetchCurrentUser()
+                    }
 
-                    try Firestore.firestore().collection("Users").document(userUID).setData(from: user, completion: { error in
-                        if error == nil{
-                            vm.isLoading = false
-                            vm.signedIn = true
-                            Task{
-                                await vm.fetchCurrentUser()
-                            }
-                        }
-                    })
                 }catch{
                     vm.isLoading = false
                     try await Auth.auth().currentUser?.delete()
@@ -258,69 +230,7 @@ struct LoginView: View {
         return true
     }
 
-    func handleLogin(){
-
-        vm.isLoading = true
-
-        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
-        // Create Google Sign In configuration object.
-        let config = GIDConfiguration(clientID: clientID)
-
-        GIDSignIn.sharedInstance.configuration = config
-
-
-
-        GIDSignIn.sharedInstance.signIn(withPresenting: UIApplication.shared.getRootViewController()) { user, error in
-            if let error = error {
-                vm.setError(error)
-                return
-            }
-
-            guard let idToken = user?.user.idToken else {
-                vm.isLoading = false
-                return
-            }
-
-            guard let accessToken = user?.user.accessToken else {
-                vm.isLoading = false
-                return
-            }
-
-
-
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
-            
-            let config = GIDConfiguration(clientID: clientID)
-
-            GIDSignIn.sharedInstance.configuration = config
-
-            // Firebase Authentication
-            Auth.auth().signIn(with: credential) {result, err in
-                vm.isLoading = false
-                if let err = err {
-                    print(err.localizedDescription)
-                    return
-                }
-                //Displaying User Name...
-                guard let user = result?.user else {
-                    return
-                }
-                print(user.displayName ?? "Success" )
-                //updating user as logged in
-                withAnimation{
-                    vm.signedIn = true
-
-                    Task{
-                        await vm.fetchCurrentUser()
-                    }
-                }
-            }
-
-        }
-
-
-    }
+    
 
     
 }

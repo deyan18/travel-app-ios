@@ -6,6 +6,10 @@
 //
 
 import Foundation
+import GoogleSignIn
+import GoogleSignInSwift
+import Firebase
+import FirebaseFirestore
 
 class MainViewModel: ObservableObject {
     @Published var signedIn = false
@@ -42,5 +46,80 @@ class MainViewModel: ObservableObject {
         self.signedIn = false
         try? FirebaseManager.shared.auth.signOut()
     }
+
+    func googleLogin(){
+
+        self.isLoading = true
+
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+
+        GIDSignIn.sharedInstance.configuration = config
+
+
+
+        GIDSignIn.sharedInstance.signIn(withPresenting: UIApplication.shared.getRootViewController()) { user, error in
+            if let error = error {
+                self.setError(error)
+                return
+            }
+
+            guard let idToken = user?.user.idToken else {
+                self.isLoading = false
+                return
+            }
+
+            guard let accessToken = user?.user.accessToken else {
+                self.isLoading = false
+                return
+            }
+
+
+
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+
+            let config = GIDConfiguration(clientID: clientID)
+
+            GIDSignIn.sharedInstance.configuration = config
+
+            // Firebase Authentication
+            Auth.auth().signIn(with: credential) {result, err in
+                self.isLoading = false
+                if let err = err {
+                    print(err.localizedDescription)
+                    return
+                }
+
+                guard let userData = result?.user else {
+                    return
+                }
+
+                let user = User(UID: userData.uid, email: userData.email ?? "", name: userData.displayName ?? "", pfpURL: userData.photoURL?.absoluteString ?? "")
+
+                self.saveUserData(user)
+
+                    self.signedIn = true
+
+                    Task{
+                        await self.fetchCurrentUser()
+                    }
+
+            }
+
+        }
+
+
+    }
+
+    func saveUserData(_ user: User){
+        do{
+            try Firestore.firestore().collection("Users").document(user.UID).setData(from: user, merge: true)
+        }catch{
+            self.setError(error)
+        }
+    }
+    
 
 }

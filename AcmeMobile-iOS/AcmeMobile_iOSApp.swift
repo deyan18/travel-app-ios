@@ -12,7 +12,7 @@ import GoogleSignIn
 @main
 struct AcmeMobile_iOSApp: App {
     @StateObject var vm: MainViewModel = MainViewModel()
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             MainView()
