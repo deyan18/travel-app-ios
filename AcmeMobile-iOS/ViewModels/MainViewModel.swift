@@ -151,4 +151,12 @@ class MainViewModel: ObservableObject {
 
         })
     }
+
+    func isGoogleUser() -> Bool{
+        let providerId = Auth.auth().currentUser?.providerData.first?.providerID
+
+        return providerId == "google.com"
+    }
+
+   
 }
