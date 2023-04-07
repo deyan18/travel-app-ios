@@ -100,11 +100,11 @@ class MainViewModel: ObservableObject {
 
                 self.saveUserData(user)
 
-                    self.signedIn = true
+                self.signedIn = true
 
-                    Task{
-                        await self.fetchCurrentUser()
-                    }
+                Task{
+                    await self.fetchCurrentUser()
+                }
 
             }
 
@@ -115,11 +115,40 @@ class MainViewModel: ObservableObject {
 
     func saveUserData(_ user: User){
         do{
-            try Firestore.firestore().collection("Users").document(user.UID).setData(from: user, merge: true)
+            try FirebaseManager.shared.firestore.collection("Users").document(user.UID).setData(from: user, merge: true)
         }catch{
             self.setError(error)
         }
     }
     
 
+    func deleteUserAccount() {
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
+
+
+        FirebaseManager.shared.auth.currentUser?.delete(completion: { err in
+            if let err = err {
+                self.setError(err)
+                return
+            }
+            let refImg = FirebaseManager.shared.storage.reference(withPath: "ProfilePictures/\(uid)")
+
+            refImg.delete { err in
+                if let err = err {
+                    print("Error: \(err)")
+                }
+            }
+
+            FirebaseManager.shared.firestore.collection("Users")
+                .document(uid).delete { err in
+                    if let err = err {
+                        print("Error: \(err)")
+                    }
+                    self.signedIn = false
+                }
+
+
+
+        })
+    }
 }
