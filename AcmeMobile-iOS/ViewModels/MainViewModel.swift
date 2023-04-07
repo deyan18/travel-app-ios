@@ -53,6 +53,8 @@ class MainViewModel: ObservableObject {
 
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
 
+
+
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
 
@@ -96,9 +98,15 @@ class MainViewModel: ObservableObject {
                     return
                 }
 
-                let user = User(UID: userData.uid, email: userData.email ?? "", name: userData.displayName ?? "", pfpURL: userData.photoURL?.absoluteString ?? "")
-
-                self.saveUserData(user)
+                FirebaseManager.shared.firestore.collection("Users").document(userData.uid).getDocument { snapshot, error in
+                    if !snapshot!.exists{
+                        let user = User(UID: userData.uid, email: userData.email ?? "", name: userData.displayName ?? "", pfpURL: userData.photoURL?.absoluteString ?? "")
+                        self.saveUserData(user)
+                        Task{
+                            await self.fetchCurrentUser()
+                        }
+                    }
+                }
 
                 self.signedIn = true
 
@@ -114,6 +122,7 @@ class MainViewModel: ObservableObject {
     }
 
     func saveUserData(_ user: User){
+
         do{
             try FirebaseManager.shared.firestore.collection("Users").document(user.UID).setData(from: user, merge: true)
         }catch{
@@ -123,11 +132,13 @@ class MainViewModel: ObservableObject {
     
 
     func deleteUserAccount() {
+        self.isLoading = true
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
 
 
         FirebaseManager.shared.auth.currentUser?.delete(completion: { err in
             if let err = err {
+                self.isLoading = false
                 self.setError(err)
                 return
             }
@@ -148,7 +159,7 @@ class MainViewModel: ObservableObject {
                 }
 
 
-
+            self.isLoading = false
         })
     }
 

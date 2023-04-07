@@ -12,12 +12,14 @@ import Firebase
 
 struct SettingsView: View {
     @EnvironmentObject var vm: MainViewModel
+    @Environment(\.presentationMode) var presentationMode
 
     @State private var name = ""
     @State private var email = ""
     @State private var img: UIImage = UIImage(named: "EmptyImage")!
     @State private var showingLogoutAlert = false
     @State private var showingDeleteAlert = false
+
 
     private var textFieldBgColor = Color.gray.opacity(0.2)
 
@@ -28,17 +30,6 @@ struct SettingsView: View {
                 customTextField(title: "Name", text: $name, backgroundColor: textFieldBgColor)
                 customButton(title: "Save Changes",backgroundColor: .accentColor, foregroundColor: .white , action: saveChanges)
                     .padding(.top, 15)
-            }
-
-            .opacity(vm.isGoogleUser() ? 0.3 : 1)
-            .disabled(vm.isGoogleUser())
-            if(vm.isGoogleUser()){
-                HStack{
-                    Image(systemName: "exclamationmark.triangle")
-                    Text("Google users can not edit account info.")
-                        .font(.footnote)
-                }
-
             }
 
             Spacer()
@@ -120,6 +111,7 @@ struct SettingsView: View {
                     await vm.fetchCurrentUser()
                 }
                 vm.isLoading = false
+                self.presentationMode.wrappedValue.dismiss()
             } catch {
                 vm.isLoading = false
                 vm.setError(error)
