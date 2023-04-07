@@ -9,6 +9,8 @@ import SwiftUI
 import MultiSlider
 
 struct HomeView: View {
+    @EnvironmentObject var vm: MainViewModel
+
     @State private var searchOriginText = ""
     @State private var searchDestinationText = ""
     @State private var isCompactOn = false
@@ -21,19 +23,6 @@ struct HomeView: View {
     @State private var maxPrice = 0.0
     @State private var valueArray: [CGFloat] = [1.0, 2.0]
 
-    private var tempTrip = Trip(
-        origin: "Madrid",
-        destination: "Seoul",
-        price: 499.00,
-        startDate: "April 5 2023",
-        endDate: "April 20 2023",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed efficitur dignissim vestibulum. Praesent libero risus, rhoncus eu pharetra sed, feugiat efficitur mi. Donec rhoncus urna ac purus lacinia dapibus. Praesent interdum mollis ornare. Maecenas a nulla eu nulla condimentum semper. Orci",
-        imageURL: "https://cdn.britannica.com/57/75757-050-122EC2ED/Changgyong-Palace-background-Seoul.jpg"
-
-    )
-    
-
-
     var body: some View {
         NavigationStack{
 
@@ -41,10 +30,13 @@ struct HomeView: View {
         ZStack{
             ScrollView(){
                 LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
-                        ForEach(0..<10) { index in
-                            NavigationLink(destination: TripDetailView(trip: tempTrip)) {
-                                tripItem(trip: tempTrip, isCompactOn: $isCompactOn)
-                            }.accentColor(.black)
+
+                    ForEach(vm.trips) { trip in
+                        NavigationLink(destination: TripDetailView(trip: trip)) {
+                            tripItem(trip: trip, isCompactOn: $isCompactOn)
+                        }
+                        .accentColor(.black)
+
                         }
                 }
                 .padding(.top, 100)
@@ -109,7 +101,7 @@ struct HomeView: View {
 
             HStack{
                 Text("Price range: ")
-                MultiValueSlider(value: $valueArray, minimumValue: 1, maximumValue: 5, snapStepSize: 1.0, valueLabelPosition: .top, orientation: .horizontal, outerTrackColor: UIColor(Color.gray), valueLabelFormatter: FORMATTER)
+                MultiValueSlider(value: $valueArray, minimumValue: 1, maximumValue: 5, snapStepSize: 1.0, valueLabelPosition: .top, orientation: .horizontal, outerTrackColor: UIColor(Color.gray), valueLabelFormatter: PRICE_FORMATTER)
                     .frame(height: 100)
             }
 

@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+func setPriceFormatter() -> NumberFormatter {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .currency
+    formatter.locale = Locale(identifier: "es_ES")
+    formatter.currencySymbol = "€"
+    return formatter
+}
+
+let PRICE_FORMATTER = setPriceFormatter()
+
+func formatDate(_ date: Date) -> String{
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd/MM/yyyy"
+
+    return formatter.string(from: date)
+}
+
+
 struct customButton: View {
     var title: String
     var backgroundColor: Color
@@ -75,22 +93,7 @@ func customTitle(text: String, foregroundColor: Color = .black) -> some View {
 
 func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
     VStack{
-        AsyncImage(url: URL(string: trip.imageURL))
-        { image in
-            image.resizable()
-        } placeholder: {
-
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .frame(maxWidth: .infinity, maxHeight: 200)
-                .foregroundColor(.gray.opacity(0.1))
-                .overlay {
-                    ProgressView()
-                }
-
-        }
-        .aspectRatio(contentMode: .fill)
-        .frame(maxWidth: .infinity, maxHeight: 200)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        tripImageView(url: trip.imageURL, maxHeight: 200)
 
         HStack(alignment: .bottom, spacing: 4) {
             Text(trip.origin)
@@ -104,7 +107,7 @@ func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
             if !isCompactOn.wrappedValue {
                 Spacer()
 
-                Text(FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
+                Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
                     .fontWeight(.bold)
 
                 Image(systemName: "bookmark")
@@ -114,12 +117,12 @@ func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
 
         HStack(alignment: .bottom, spacing: 4) {
 
-            Text(trip.startDate)
+            Text(formatDate(trip.startDate))
                 .font(isCompactOn.wrappedValue ? .caption: .footnote)
             Text("-")
                 .font(.caption)
                 .fontWeight(.light)
-            Text(trip.endDate)
+            Text(formatDate(trip.endDate))
                 .font(isCompactOn.wrappedValue ? .caption: .footnote)
 
             if !isCompactOn.wrappedValue {
@@ -130,7 +133,7 @@ func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
 
         if isCompactOn.wrappedValue {
             HStack(alignment: .bottom, spacing: 4) {
-                Text(FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
+                Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
                     .fontWeight(.bold)
 
                 Image(systemName: "bookmark")
@@ -187,13 +190,14 @@ func tripImageView(url: String, cornerRadius: CGFloat = 15, maxHeight: CGFloat =
     AsyncImage(url: URL(string: url))
     { image in
         image.resizable()
+            .scaledToFill()
+            .frame(maxHeight: maxHeight)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .aspectRatio(contentMode: .fill)
-            .frame(maxWidth: .infinity, maxHeight: maxHeight)
     } placeholder: {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-            .aspectRatio(contentMode: .fill)
-            .frame(maxWidth: .infinity, maxHeight: maxHeight)
+            .scaledToFill()
+            .frame(maxHeight: maxHeight)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .overlay {
                 ProgressView()
             }
@@ -224,3 +228,4 @@ func profileImageView(url: String, size: CGFloat = 50) -> some View {
     }
 
 }
+

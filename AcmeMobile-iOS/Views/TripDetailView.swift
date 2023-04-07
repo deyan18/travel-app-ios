@@ -31,12 +31,12 @@ struct TripDetailView: View {
 
                 HStack(alignment: .bottom, spacing: 4) {
 
-                    Text(trip.startDate)
+                    Text(formatDate(trip.startDate))
                         .font(.footnote)
                     Text("-")
                         .font(.caption)
                         .fontWeight(.light)
-                    Text(trip.endDate)
+                    Text(formatDate(trip.endDate))
                         .font(.footnote)
                 }
 
@@ -63,7 +63,7 @@ struct TripDetailView: View {
                 Spacer()
                 HStack(spacing: 15){
                     Spacer()
-                    Text(FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
+                    Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
                         .fontWeight(.bold)
 
                     customButton(title: "Purchase", backgroundColor: .accentColor, foregroundColor: .white, iconName: "cart") {
@@ -73,6 +73,7 @@ struct TripDetailView: View {
                     Spacer()
                 }
                 .padding(.top, 20)
+                .padding(.bottom, 20)
                 .background(.thinMaterial)
             }
 

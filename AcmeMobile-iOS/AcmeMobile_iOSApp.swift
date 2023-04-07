@@ -23,6 +23,8 @@ struct AcmeMobile_iOSApp: App {
                             await vm.fetchCurrentUser()
 
                         }
+                        //vm.addRandomTripsToFirestore()
+                        vm.fetchTrips()
                         vm.signedIn = true
                     }
                 }

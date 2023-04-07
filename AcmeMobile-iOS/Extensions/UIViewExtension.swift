@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 extension UIApplication{
     func getRect()->CGRect{
@@ -23,5 +24,23 @@ extension UIApplication{
             return .init()
         }
         return root
+    }
+}
+
+struct HideTabBarOnPush<Content: View>: UIViewControllerRepresentable {
+    var content: () -> Content
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<HideTabBarOnPush>) -> UIViewController {
+        let childView = UIHostingController(rootView: content())
+        let viewController = UINavigationController(rootViewController: childView)
+        return viewController
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<HideTabBarOnPush>) {}
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if viewController.hidesBottomBarWhenPushed != navigationController.topViewController?.hidesBottomBarWhenPushed {
+            navigationController.setNavigationBarHidden(viewController.hidesBottomBarWhenPushed, animated: animated)
+        }
     }
 }
