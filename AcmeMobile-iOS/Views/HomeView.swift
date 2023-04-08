@@ -25,8 +25,6 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack{
-
-
         ZStack{
             ScrollView(){
                 LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
@@ -155,7 +153,7 @@ struct HomeView: View {
         }
     }
 
-    func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
+    func tripItem(trip: Trip, isCompactOn: Binding<Bool> = Binding.constant(false)) -> some View {
 
         var bookmarkButton: some View{
             Image(systemName: vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false ? "bookmark.fill" : "bookmark")
