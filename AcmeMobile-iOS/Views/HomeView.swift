@@ -15,13 +15,15 @@ struct HomeView: View {
     @State private var searchDestinationText = ""
     @State private var isCompactOn = false
     @State private var isFiltersOn = false
+    @State private var isStartDateFilterChanged = false
+    @State private var isEndDateFilterChanged = false
     @State private var isMapOn = false
     @State private var showFiltersSheet = false
     @State private var startDate = Date.now
     @State private var endDate = Date.now
     @State private var minPrice = 0.0
     @State private var maxPrice = 0.0
-    @State private var valueArray: [CGFloat] = [1.0, 2.0]
+    @State private var valueArray: [CGFloat] = [-1.0, -1.0]
 
     var body: some View {
         NavigationStack{
@@ -31,8 +33,21 @@ struct HomeView: View {
 
                     ForEach(vm.trips) { trip in
                         NavigationLink(destination: TripDetailView(trip: trip)) {
-                            tripItem(trip: trip, isCompactOn: $isCompactOn)
+                            if isFiltersOn {
+                                let isEndDateFilterValid = !isEndDateFilterChanged || trip.endDate <= endDate
+                                let isStartDateFilterValid = !isStartDateFilterChanged || trip.startDate >= startDate
+                                let isPriceRangeValid = trip.price >= valueArray[0] && trip.price <= valueArray[1]
+
+                                if (isFiltersOn && isEndDateFilterValid && isStartDateFilterValid && isPriceRangeValid) || !isFiltersOn {
+                                    tripItem(trip: trip, isCompactOn: $isCompactOn)
+
+                                }
+                            } else {
+                                tripItem(trip: trip, isCompactOn: $isCompactOn)
+                            }
+
                         }
+                        .background(.green)
                         .accentColor(.primary)
 
                         }
@@ -44,7 +59,6 @@ struct HomeView: View {
 
             VStack{
                 VStack{
-                    
                     HStack {
                         searchBar(text: $searchOriginText, hint: "Origin") {
                         }
@@ -92,28 +106,55 @@ struct HomeView: View {
                 .fontWeight(.medium)
             DatePicker(selection: $startDate, in: Date.now..., displayedComponents: .date) {
                 Text("Start date: ")
-            }
+            }.onChange(of: startDate, perform: { newValue in
+                isStartDateFilterChanged = true
+            })
+
+
             DatePicker(selection: $endDate, in: startDate..., displayedComponents: .date) {
                 Text("End date: ")
-            }
+            }.onChange(of: endDate, perform: { newValue in
+                isEndDateFilterChanged = true
+            })
 
             HStack{
                 Text("Price range: ")
-                MultiValueSlider(value: $valueArray, minimumValue: 1, maximumValue: 5, snapStepSize: 1.0, valueLabelPosition: .top, orientation: .horizontal, outerTrackColor: UIColor(Color.gray), valueLabelFormatter: PRICE_FORMATTER)
+
+                MultiValueSlider(value: $valueArray, minimumValue: vm.trips.min(by: { $0.price < $1.price })?.price ?? 0.0, maximumValue: vm.trips.max(by: { $0.price < $1.price })?.price ?? 0.0, snapStepSize: 1.0, valueLabelPosition: .top, orientation: .horizontal ,outerTrackColor: UIColor(Color.gray), valueLabelFormatter: PRICE_FORMATTER)
                     .frame(height: 100)
             }
 
             HStack{
-                customButton(title: "Remove", backgroundColor: .red, foregroundColor: .white) {
-                    //
-                }
-                customButton(title: "Save", backgroundColor: .accentColor, foregroundColor: .white) {
-                    //
+                if isFiltersOn{
+                    customButton(title: "Disable", backgroundColor: .red, foregroundColor: .white) {
+                        isFiltersOn = false
+                        isStartDateFilterChanged = false
+                        isEndDateFilterChanged = false
+                        startDate = Date.now
+                        endDate = Date.now
+                        showFiltersSheet.toggle()
+                        
+                    }
+
+                    customButton(title: "Close", backgroundColor: .gray.opacity(0.7), foregroundColor: .white) {
+                        showFiltersSheet.toggle()
+                    }
+                }else{
+                    customButton(title: "Enable", backgroundColor: .accentColor, foregroundColor: .white) {
+                        isFiltersOn = true
+                        showFiltersSheet.toggle()
+                    }
                 }
             }
 
 
         }.padding()
+            .onAppear{
+                if(valueArray == [-1.0, -1.0]){
+                    valueArray = [vm.trips.min(by: { $0.price < $1.price })?.price ?? 0.0, vm.trips.max(by: { $0.price < $1.price })?.price ?? 0.0]
+                }
+
+            }
     }
     
     func searchBar(text: Binding<String>, hint: String = "Search", onSearchTapped: @escaping () -> Void) -> some View {
