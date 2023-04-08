@@ -190,11 +190,10 @@ func tripImageView(url: String, cornerRadius: CGFloat = 15, maxHeight: CGFloat =
     AsyncImage(url: URL(string: url))
     { image in
         image.resizable()
-            .scaledToFill()
-            .frame(maxHeight: maxHeight)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+
     } placeholder: {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            .fill(.gray.opacity(0.2))
             .scaledToFill()
             .frame(maxHeight: maxHeight)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
@@ -203,6 +202,9 @@ func tripImageView(url: String, cornerRadius: CGFloat = 15, maxHeight: CGFloat =
             }
 
     }
+    .aspectRatio(contentMode: .fill)
+    .frame(maxHeight: maxHeight)
+    .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
 
 }
 
