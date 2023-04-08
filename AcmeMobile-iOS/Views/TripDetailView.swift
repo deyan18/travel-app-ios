@@ -10,6 +10,7 @@ import SwiftUI
 struct TripDetailView: View {
     @EnvironmentObject var vm: MainViewModel
      var trip: Trip
+    @State private var showingPurchaseAlert = false
     
     var body: some View {
         ZStack{
@@ -65,10 +66,23 @@ struct TripDetailView: View {
                     Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
                         .fontWeight(.bold)
 
-                    customButton(title: "Purchase", backgroundColor: .accentColor, foregroundColor: .white, iconName: "cart") {
-                        //
+                    customButton(title: vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false ? "Trip Purchased" : "Purchase", backgroundColor: .accentColor, foregroundColor: .white, iconName: "cart"){
+                        showingPurchaseAlert.toggle()
                     }
-                    .frame(maxWidth: 200)
+                            .disabled(vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false)
+                            .frame(maxWidth: 200)
+                            .alert(isPresented: $showingPurchaseAlert) {
+                                Alert(
+                                    title: Text("Purchase trip?"),
+                                    message: Text("Are you sure you want to purchase this trip for \(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")"),
+                                    primaryButton: .default(Text("Purchase")) {
+                                        vm.purchaseTrip(tripID: trip.UID)
+                                    },
+                                    secondaryButton: .cancel()
+                                )
+                            }
+
+
                     Spacer()
                 }
                 .padding(.top, 20)

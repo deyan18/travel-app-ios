@@ -262,7 +262,6 @@ class MainViewModel: ObservableObject {
     }
 
     func bookmarkTrip(tripID: String) {
-        print("Bookmarking trip")
         guard let user = currentUser else { return }
 
 
@@ -280,6 +279,20 @@ class MainViewModel: ObservableObject {
             ]) { error in
                 if let error = error {
                     print("Error adding trip to bookmarked trips: \(error.localizedDescription)")
+                }
+            }
+        }
+
+    }
+
+    func purchaseTrip(tripID: String) {
+        guard let user = currentUser else { return }
+        if !user.purchasedTrips.contains(tripID){
+            FirebaseManager.shared.firestore.collection("Users").document(user.UID).updateData([
+                "purchasedTrips": FieldValue.arrayUnion([tripID])
+            ]) { error in
+                if let error = error {
+                    print("Error removing trip from bookmarked trips: \(error.localizedDescription)")
                 }
             }
         }

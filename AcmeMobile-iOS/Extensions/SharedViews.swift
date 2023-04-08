@@ -31,6 +31,7 @@ struct customButton: View {
     var foregroundColor: Color
     var action: () -> Void
     var iconName: String
+    var smallFont: Bool
     
     var body: some View {
         Button(action: action) {
@@ -46,7 +47,7 @@ struct customButton: View {
                 Text(title == "Google" ? "" : title)
 
             }
-            .font(.headline)
+            .font(smallFont ? .footnote : .headline)
             .foregroundColor(foregroundColor)
             .frame(maxWidth: .infinity)
             .padding()
@@ -56,12 +57,13 @@ struct customButton: View {
         }
     }
     
-    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .blue,iconName: String = "", action: @escaping () -> Void ) {
+    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .blue,iconName: String = "", smallFont: Bool = false, action: @escaping () -> Void ) {
         self.title = title
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
         self.action = action
         self.iconName = iconName
+        self.smallFont = smallFont
     }
 }
 
