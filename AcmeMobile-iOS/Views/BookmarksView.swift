@@ -19,7 +19,7 @@ struct BookmarksView: View {
                             NavigationLink(destination: TripDetailView(trip: trip)) {
                                 tripItem(trip: trip)
                             }
-                            .accentColor(.black)
+                            .accentColor(.primary)
                         }
 
                     }

@@ -33,7 +33,7 @@ struct HomeView: View {
                         NavigationLink(destination: TripDetailView(trip: trip)) {
                             tripItem(trip: trip, isCompactOn: $isCompactOn)
                         }
-                        .accentColor(.black)
+                        .accentColor(.primary)
 
                         }
                 }
@@ -44,7 +44,7 @@ struct HomeView: View {
 
             VStack{
                 VStack{
-                    //customTitle(text: "Explore Trips", foregroundColor: .black.opacity(0.8))
+                    
                     HStack {
                         searchBar(text: $searchOriginText, hint: "Origin") {
                         }
@@ -146,7 +146,7 @@ struct HomeView: View {
                 Text(title)
             }
             .font(.footnote)
-            .foregroundColor(isOn.wrappedValue ? .white : .black)
+            .foregroundColor(isOn.wrappedValue ? .white : .primary)
             .padding(9)
             .background(isOn.wrappedValue ? Color.accentColor : Color.gray.opacity(0.2))
             .cornerRadius(15.0)
