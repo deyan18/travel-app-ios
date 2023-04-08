@@ -107,9 +107,8 @@ struct SettingsView: View {
                     // update user data in firestore with new profile picture url
                     vm.saveUserData(updatedUser)
                 }
-                Task{
-                    await vm.fetchCurrentUser()
-                }
+
+                vm.fetchCurrentUser()
                 vm.isLoading = false
                 self.presentationMode.wrappedValue.dismiss()
             } catch {

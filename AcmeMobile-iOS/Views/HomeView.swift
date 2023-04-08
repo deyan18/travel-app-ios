@@ -154,16 +154,73 @@ struct HomeView: View {
             .cornerRadius(15.0)
         }
     }
-    
+
+    func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
+
+        var bookmarkButton: some View{
+            Image(systemName: vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false ? "bookmark.fill" : "bookmark")
+                .onTapGesture {
+                    vm.bookmarkTrip(tripID: trip.UID)
+                }
+        }
+
+        return VStack{
+            tripImageView(url: trip.imageURL, maxHeight: 200)
+
+            HStack(alignment: .bottom, spacing: 4) {
+                Text(trip.origin)
+                    .font(.callout)
+                Text("to")
+                    .font(.caption)
+                    .fontWeight(.light)
+                Text(trip.destination)
+                    .font(.callout)
+
+                if !isCompactOn.wrappedValue {
+                    Spacer()
+
+                    Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
+                        .fontWeight(.bold)
+
+                    bookmarkButton
+                }
+
+            }
+
+            HStack(alignment: .bottom, spacing: 4) {
+
+                Text(formatDate(trip.startDate))
+                    .font(isCompactOn.wrappedValue ? .caption: .footnote)
+                Text("-")
+                    .font(.caption)
+                    .fontWeight(.light)
+                Text(formatDate(trip.endDate))
+                    .font(isCompactOn.wrappedValue ? .caption: .footnote)
+
+                if !isCompactOn.wrappedValue {
+                    Spacer()
+                }
+
+            }
+
+            if isCompactOn.wrappedValue {
+                HStack(alignment: .bottom, spacing: 4) {
+                    Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
+                        .fontWeight(.bold)
+
+                    bookmarkButton
+                }
+            }
+
+
+        }
+
+
+    }
     
     
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
-}
 
 struct PriceRangeSlider: View {
     @Binding var lowerValue: Double
@@ -205,5 +262,8 @@ struct PriceRangeSlider: View {
             .padding(.horizontal)
         }
     }
+
+
+
 }
 

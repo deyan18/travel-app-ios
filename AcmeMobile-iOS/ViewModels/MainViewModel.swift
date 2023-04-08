@@ -19,7 +19,9 @@ class MainViewModel: ObservableObject {
     @Published var alertMessage = ""
     @Published var trips: [Trip] = []
 
-    func fetchCurrentUser() async {
+    private var usersListener: ListenerRegistration?
+
+    /*func fetchCurrentUser() async {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
 
         do{
@@ -31,7 +33,36 @@ class MainViewModel: ObservableObject {
         }catch{
             
         }
+    }*/
+
+    func fetchCurrentUser() {
+        guard let userUID = FirebaseManager.shared.auth.currentUser?.uid else { return }
+
+        usersListener?.remove()
+
+        usersListener = FirebaseManager.shared.firestore
+            .collection("Users")
+            .document(userUID)
+            .addSnapshotListener { documentSnapshot, error in
+                if let error = error {
+                    print("Error:", error)
+                    return
+                }
+
+                guard let document = documentSnapshot, document.exists else {
+                    print("Document does not exist")
+                    return
+                }
+
+                do {
+                    self.currentUser = try document.data(as: User.self)
+                    // Do something with the updated user data here
+                } catch let error {
+                    print("Error decoding user data: \(error.localizedDescription)")
+                }
+            }
     }
+
 
     func alertUser(_ message: String){
         alertMessage = message
@@ -103,17 +134,15 @@ class MainViewModel: ObservableObject {
                     if !snapshot!.exists{
                         let user = User(UID: userData.uid, email: userData.email ?? "", name: userData.displayName ?? "", pfpURL: userData.photoURL?.absoluteString ?? "")
                         self.saveUserData(user)
-                        Task{
-                            await self.fetchCurrentUser()
-                        }
+                        self.fetchCurrentUser()
+
                     }
                 }
 
                 self.signedIn = true
 
-                Task{
-                    await self.fetchCurrentUser()
-                }
+                self.fetchCurrentUser()
+                
 
             }
 
@@ -232,6 +261,30 @@ class MainViewModel: ObservableObject {
 
     }
 
+    func bookmarkTrip(tripID: String) {
+        print("Bookmarking trip")
+        guard let user = currentUser else { return }
+
+
+        if user.bookmarkedTrips.contains(tripID){
+            FirebaseManager.shared.firestore.collection("Users").document(user.UID).updateData([
+                "bookmarkedTrips": FieldValue.arrayRemove([tripID])
+            ]) { error in
+                if let error = error {
+                    print("Error removing trip from bookmarked trips: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            FirebaseManager.shared.firestore.collection("Users").document(user.UID).updateData([
+                "bookmarkedTrips": FieldValue.arrayUnion([tripID])
+            ]) { error in
+                if let error = error {
+                    print("Error adding trip to bookmarked trips: \(error.localizedDescription)")
+                }
+            }
+        }
+
+    }
 
 
    

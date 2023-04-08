@@ -91,58 +91,7 @@ func customTitle(text: String, foregroundColor: Color = .black) -> some View {
 
 }
 
-func tripItem(trip: Trip, isCompactOn: Binding<Bool>) -> some View {
-    VStack{
-        tripImageView(url: trip.imageURL, maxHeight: 200)
 
-        HStack(alignment: .bottom, spacing: 4) {
-            Text(trip.origin)
-                .font(.callout)
-            Text("to")
-                .font(.caption)
-                .fontWeight(.light)
-            Text(trip.destination)
-                .font(.callout)
-
-            if !isCompactOn.wrappedValue {
-                Spacer()
-
-                Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
-                    .fontWeight(.bold)
-
-                Image(systemName: "bookmark")
-            }
-
-        }
-
-        HStack(alignment: .bottom, spacing: 4) {
-
-            Text(formatDate(trip.startDate))
-                .font(isCompactOn.wrappedValue ? .caption: .footnote)
-            Text("-")
-                .font(.caption)
-                .fontWeight(.light)
-            Text(formatDate(trip.endDate))
-                .font(isCompactOn.wrappedValue ? .caption: .footnote)
-
-            if !isCompactOn.wrappedValue {
-                Spacer()
-            }
-
-        }
-
-        if isCompactOn.wrappedValue {
-            HStack(alignment: .bottom, spacing: 4) {
-                Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
-                    .fontWeight(.bold)
-
-                Image(systemName: "bookmark")
-            }
-        }
-
-
-    }
-}
 
 
 struct UploadImageButton: View {

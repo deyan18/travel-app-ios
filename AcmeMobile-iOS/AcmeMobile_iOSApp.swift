@@ -19,10 +19,8 @@ struct AcmeMobile_iOSApp: App {
                 .environmentObject(vm)
                 .onAppear{
                     if FirebaseManager.shared.auth.currentUser != nil{
-                        Task{
-                            await vm.fetchCurrentUser()
 
-                        }
+                        vm.fetchCurrentUser()
                         //vm.addRandomTripsToFirestore()
                         vm.fetchTrips()
                         vm.signedIn = true

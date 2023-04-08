@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TripDetailView: View {
+    @EnvironmentObject var vm: MainViewModel
      var trip: Trip
     
     var body: some View {
@@ -40,9 +41,7 @@ struct TripDetailView: View {
                         .font(.footnote)
                 }
 
-                Image(systemName: "bookmark")
-                    .font(.title2)
-                    .padding(.top, 3)
+                bookmarkButton
 
 
                 HStack{
@@ -84,5 +83,15 @@ struct TripDetailView: View {
 
 
         
+    }
+
+    var bookmarkButton: some View{
+        Image(systemName: vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false ? "bookmark.fill" : "bookmark")
+            .font(.title2)
+            .padding(.top, 3)
+            .onTapGesture {
+                print("tap on bookmark")
+                vm.bookmarkTrip(tripID: trip.UID)
+            }
     }
 }

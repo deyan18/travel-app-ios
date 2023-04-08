@@ -140,7 +140,7 @@ struct LoginView: View {
                 do{
                     try await Auth.auth().signIn(withEmail: email, password: password)
                     vm.signedIn = true
-                    await vm.fetchCurrentUser()
+                    vm.fetchCurrentUser()
                     vm.isLoading = false
                 }catch{
                     vm.isLoading = false
@@ -185,9 +185,8 @@ struct LoginView: View {
                     vm.saveUserData(user)
                     vm.isLoading = false
                     vm.signedIn = true
-                    Task{
-                        await vm.fetchCurrentUser()
-                    }
+                    vm.fetchCurrentUser()
+                    
 
                 }catch{
                     vm.isLoading = false
