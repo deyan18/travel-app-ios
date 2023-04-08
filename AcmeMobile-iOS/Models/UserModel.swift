@@ -14,6 +14,9 @@ struct User: Identifiable, Codable{
     var email: String
     var name: String
     var pfpURL: String
+    var bookmarkedTrips: [String] = []
+    var purchasedTrips: [String] = []
+
 
     enum CodingKeys: CodingKey{
         case id
@@ -21,5 +24,8 @@ struct User: Identifiable, Codable{
         case email
         case name
         case pfpURL
+        case bookmarkedTrips
+        case purchasedTrips
+
     }
 }
