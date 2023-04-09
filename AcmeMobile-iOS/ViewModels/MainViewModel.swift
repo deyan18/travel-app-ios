@@ -19,6 +19,7 @@ class MainViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var alertMessage = ""
     @Published var trips: [Trip] = []
+    @Published var hideTabBar = false
 
     private var usersListener: ListenerRegistration?
 
