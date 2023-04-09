@@ -9,14 +9,16 @@ import SwiftUI
 import Firebase
 import GoogleSignIn
 
+
 @main
 struct AcmeMobile_iOSApp: App {
     @StateObject var vm: MainViewModel = MainViewModel()
-
+    @StateObject var lm: LocationManager = LocationManager()
     var body: some Scene {
         WindowGroup {
             MainView()
                 .environmentObject(vm)
+                .environmentObject(lm)
                 .onAppear{
                     if FirebaseManager.shared.auth.currentUser != nil{
 

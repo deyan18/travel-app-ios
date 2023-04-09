@@ -6,17 +6,20 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct TripDetailView: View {
     @EnvironmentObject var vm: MainViewModel
      var trip: Trip
     @State private var showingPurchaseAlert = false
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+
     
     var body: some View {
         ZStack{
             ScrollView{
                 tripImageView(url: trip.imageURL)
-
+               
                 HStack(alignment: .bottom, spacing: 4) {
                     Text(trip.origin)
                         .font(.title2)
@@ -56,8 +59,12 @@ struct TripDetailView: View {
                 Text(trip.description)
                     .font(.footnote)
 
-                Spacer()
+                mapView
+
+
+                Spacer(minLength: 200)
             }.padding(.horizontal)
+                .scrollIndicators(.hidden)
 
             VStack{
                 Spacer()
@@ -90,6 +97,9 @@ struct TripDetailView: View {
                 .background(.thinMaterial)
             }
 
+        }.onAppear{
+            setRegion()
+
         }
 
 
@@ -97,6 +107,10 @@ struct TripDetailView: View {
 
 
         
+    }
+
+    func setRegion(){
+        region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: trip.originCoordinate.latitude, longitude: trip.originCoordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
     }
 
     var bookmarkButton: some View{
@@ -108,4 +122,24 @@ struct TripDetailView: View {
                 vm.bookmarkTrip(tripID: trip.UID)
             }
     }
+
+    var mapView: some View{
+        let annotations = [
+            TripLocation(name: "Origin", coordinate: trip.originCoordinate),
+            TripLocation(name: "Destination", coordinate: trip.destinationCoordinate)
+
+        ]
+        return Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: annotations) {
+            MapMarker(coordinate: $0.coordinate, tint: .accentColor)
+        }
+        .frame( height: 200)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+
+    }
+}
+
+struct TripLocation: Identifiable {
+    let id = UUID()
+    let name: String
+    let coordinate: CLLocationCoordinate2D
 }

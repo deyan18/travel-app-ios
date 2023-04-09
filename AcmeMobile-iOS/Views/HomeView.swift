@@ -47,7 +47,6 @@ struct HomeView: View {
                             }
 
                         }
-                        .background(.green)
                         .accentColor(.primary)
 
                         }
@@ -261,48 +260,7 @@ struct HomeView: View {
 }
 
 
-struct PriceRangeSlider: View {
-    @Binding var lowerValue: Double
-    @Binding var upperValue: Double
-
-    var body: some View {
-        VStack {
-            Text(String(format: "%.2f € - %.2f €", lowerValue, upperValue))
-                .foregroundColor(.gray)
-
-            Slider(
-                value: Binding(
-                    get: { self.lowerValue },
-                    set: {
-                        if $0 < self.upperValue {
-                            self.lowerValue = $0
-                        }
-                    }
-                ),
-                in: 0...1000,
-                step: 1
-            )
-            .accentColor(.green)
-            .padding(.horizontal)
-
-            Slider(
-                value: Binding(
-                    get: { self.upperValue },
-                    set: {
-                        if $0 > self.lowerValue {
-                            self.upperValue = $0
-                        }
-                    }
-                ),
-                in: 0...1000,
-                step: 1
-            )
-            .accentColor(.green)
-            .padding(.horizontal)
-        }
-    }
 
 
 
-}
 
