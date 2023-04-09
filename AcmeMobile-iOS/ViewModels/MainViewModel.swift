@@ -225,7 +225,7 @@ class MainViewModel: ObservableObject {
                     do{
                         try self.trips.append(queryDoc.data(as: Trip.self))
                     }catch{
-                        print("Error fetching trip:", error)
+                        //print("Error fetching trip:", error)
                     }
 
                 })
@@ -298,7 +298,7 @@ class MainViewModel: ObservableObject {
                 "purchasedTrips": FieldValue.arrayUnion([tripID])
             ]) { error in
                 if let error = error {
-                    print("Error removing trip from bookmarked trips: \(error.localizedDescription)")
+                    print("Error: \(error.localizedDescription)")
                 }
             }
         }

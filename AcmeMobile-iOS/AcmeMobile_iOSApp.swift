@@ -20,6 +20,7 @@ struct AcmeMobile_iOSApp: App {
                 .environmentObject(vm)
                 .environmentObject(lm)
                 .onAppear{
+                    
                     if FirebaseManager.shared.auth.currentUser != nil{
 
                         vm.fetchCurrentUser()

@@ -13,6 +13,7 @@ struct TripDetailView: View {
      var trip: Trip
     @State private var showingPurchaseAlert = false
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    @State private var weather: WeatherModel?
 
     
     var body: some View {
@@ -48,6 +49,8 @@ struct TripDetailView: View {
                 bookmarkButton
 
 
+
+
                 HStack{
                     Text("Description")
                         .font(.footnote)
@@ -59,6 +62,8 @@ struct TripDetailView: View {
                 Text(trip.description)
                     .font(.footnote)
 
+                weatherView
+                    .padding(.vertical)
                 mapView
 
 
@@ -98,6 +103,10 @@ struct TripDetailView: View {
             }
 
         }.onAppear{
+            Task{
+                weather = await getWeather(location: trip.destinationCoordinate)
+
+            }
             setRegion()
 
         }
@@ -111,6 +120,53 @@ struct TripDetailView: View {
 
     func setRegion(){
         region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: trip.originCoordinate.latitude, longitude: trip.originCoordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    }
+
+    var weatherView: some View{
+        VStack {
+            if weather != nil{
+
+                HStack {
+                    if let url = weather!.iconURL {
+                        AsyncImage(url: url) { image in
+                            image
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    }
+
+                    VStack(alignment: .leading) {
+                        Text(weather!.city)
+                            .font(.title2)
+                        Text(weather!.currentTemperature)
+                            .font(.system(size: 50))
+                            .foregroundColor(.primary)
+                        Text(weather!.weather.description)
+                            .font(.headline)
+
+
+                    }
+
+                }
+                HStack(spacing: 14) {
+                    Label(weather!.maxTemperature, systemImage: "thermometer.sun.fill")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.black, .red)
+                    Label(weather!.minTemperature, systemImage: "thermometer.snowflake")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.black, .blue)
+                    Label(weather!.humidity, systemImage: "humidity.fill")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.black, .blue)
+                }
+
+                Spacer()
+            }
+        }
+        .padding(.top, 10)
+        .frame(maxWidth: .infinity)
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 
     var bookmarkButton: some View{

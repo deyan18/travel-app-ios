@@ -35,6 +35,8 @@
 		8B9BED8429DDB4EC00E7C0A5 /* SharedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */; };
 		8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9BED8529DDCD3E00E7C0A5 /* HomeView.swift */; };
 		8B9C75CD29E2E8DD00EEF7D1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C75CC29E2E8DD00EEF7D1 /* LocationManager.swift */; };
+		8B9C75CF29E3335200EEF7D1 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C75CE29E3335200EEF7D1 /* WeatherModel.swift */; };
+		8B9C75D129E3337500EEF7D1 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C75D029E3337500EEF7D1 /* WeatherViewModel.swift */; };
 		8BAB7F6929E0415500ECD924 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB7F6829E0415500ECD924 /* SettingsView.swift */; };
 		8BE9E06129E0072600A506E9 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 8BE9E06029E0072600A506E9 /* GoogleSignIn */; };
 		8BE9E06329E0072700A506E9 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8BE9E06229E0072700A506E9 /* GoogleSignInSwift */; };
@@ -85,6 +87,8 @@
 		8B9BED8329DDB4EC00E7C0A5 /* SharedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViews.swift; sourceTree = "<group>"; };
 		8B9BED8529DDCD3E00E7C0A5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		8B9C75CC29E2E8DD00EEF7D1 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		8B9C75CE29E3335200EEF7D1 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		8B9C75D029E3337500EEF7D1 /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		8BAB7F6829E0415500ECD924 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8BE9E06429E0079600A506E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8BE9E06529E009D600A506E9 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 			children = (
 				8B26204D29DECEEC00539B88 /* TripModel.swift */,
 				8B26206129DEF4BD00539B88 /* UserModel.swift */,
+				8B9C75CE29E3335200EEF7D1 /* WeatherModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 				8B9554F629DF3B790012DA14 /* FirebaseManager.swift */,
 				8B9554F829DF3BE50012DA14 /* MainViewModel.swift */,
 				8B9C75CC29E2E8DD00EEF7D1 /* LocationManager.swift */,
+				8B9C75D029E3337500EEF7D1 /* WeatherViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -392,10 +398,12 @@
 				8B9554F929DF3BE50012DA14 /* MainViewModel.swift in Sources */,
 				8B9BED8229DD9CD300E7C0A5 /* MainView.swift in Sources */,
 				8BE9E06629E009D600A506E9 /* UIViewExtension.swift in Sources */,
+				8B9C75D129E3337500EEF7D1 /* WeatherViewModel.swift in Sources */,
 				8B26204E29DECEEC00539B88 /* TripModel.swift in Sources */,
 				8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */,
 				8B5C050029DE07B7001674B3 /* TripDetailView.swift in Sources */,
 				8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */,
+				8B9C75CF29E3335200EEF7D1 /* WeatherModel.swift in Sources */,
 				8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */,
 				8B26205229DEE57100539B88 /* BookmarksView.swift in Sources */,
 				8B26206229DEF4BD00539B88 /* UserModel.swift in Sources */,
