@@ -12,13 +12,11 @@
 		8B26205229DEE57100539B88 /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26205129DEE57100539B88 /* BookmarksView.swift */; };
 		8B26205429DEE7AA00539B88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B26205329DEE7AA00539B88 /* GoogleService-Info.plist */; };
 		8B26205729DEE94700539B88 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205629DEE94700539B88 /* FirebaseAuth */; };
-		8B26205929DEE9AD00539B88 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26205829DEE9AD00539B88 /* UserViewModel.swift */; };
 		8B26205C29DEF42000539B88 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205B29DEF42000539B88 /* FirebaseFirestore */; };
 		8B26205E29DEF42000539B88 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205D29DEF42000539B88 /* FirebaseFirestoreSwift */; };
 		8B26206029DEF42000539B88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8B26205F29DEF42000539B88 /* FirebaseStorage */; };
 		8B26206229DEF4BD00539B88 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B26206129DEF4BD00539B88 /* UserModel.swift */; };
 		8B5C04FC29DDFF17001674B3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5C04FB29DDFF17001674B3 /* MultiSlider */; };
-		8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */; };
 		8B5C050029DE07B7001674B3 /* TripDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */; };
 		8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6603D929DD8EAB0072A923 /* AcmeMobile_iOSApp.swift */; };
 		8B6603DE29DD8EAE0072A923 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B6603DD29DD8EAE0072A923 /* Assets.xcassets */; };
@@ -37,6 +35,8 @@
 		8B9C75CD29E2E8DD00EEF7D1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C75CC29E2E8DD00EEF7D1 /* LocationManager.swift */; };
 		8B9C75CF29E3335200EEF7D1 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C75CE29E3335200EEF7D1 /* WeatherModel.swift */; };
 		8B9C75D129E3337500EEF7D1 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C75D029E3337500EEF7D1 /* WeatherViewModel.swift */; };
+		8BA2ED6529E7450E00D5CAF4 /* CocoaMQTT in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA2ED6429E7450E00D5CAF4 /* CocoaMQTT */; };
+		8BA2ED6729E7450E00D5CAF4 /* CocoaMQTTWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA2ED6629E7450E00D5CAF4 /* CocoaMQTTWebSocket */; };
 		8BAB7F6929E0415500ECD924 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAB7F6829E0415500ECD924 /* SettingsView.swift */; };
 		8BE9E06129E0072600A506E9 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 8BE9E06029E0072600A506E9 /* GoogleSignIn */; };
 		8BE9E06329E0072700A506E9 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8BE9E06229E0072700A506E9 /* GoogleSignInSwift */; };
@@ -65,9 +65,7 @@
 		8B26204F29DEE4EB00539B88 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		8B26205129DEE57100539B88 /* BookmarksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksView.swift; sourceTree = "<group>"; };
 		8B26205329DEE7AA00539B88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		8B26205829DEE9AD00539B88 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		8B26206129DEF4BD00539B88 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
-		8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
 		8B5C04FF29DE07B7001674B3 /* TripDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripDetailView.swift; sourceTree = "<group>"; };
 		8B6603D629DD8EAB0072A923 /* AcmeMobile-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AcmeMobile-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B6603D929DD8EAB0072A923 /* AcmeMobile_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcmeMobile_iOSApp.swift; sourceTree = "<group>"; };
@@ -102,7 +100,9 @@
 				8B5C04FC29DDFF17001674B3 /* MultiSlider in Frameworks */,
 				8B26205729DEE94700539B88 /* FirebaseAuth in Frameworks */,
 				8BE9E06329E0072700A506E9 /* GoogleSignInSwift in Frameworks */,
+				8BA2ED6729E7450E00D5CAF4 /* CocoaMQTTWebSocket in Frameworks */,
 				8B26205C29DEF42000539B88 /* FirebaseFirestore in Frameworks */,
+				8BA2ED6529E7450E00D5CAF4 /* CocoaMQTT in Frameworks */,
 				8B26206029DEF42000539B88 /* FirebaseStorage in Frameworks */,
 				8B26205E29DEF42000539B88 /* FirebaseFirestoreSwift in Frameworks */,
 				8BE9E06129E0072600A506E9 /* GoogleSignIn in Frameworks */,
@@ -166,7 +166,6 @@
 				8B6603D929DD8EAB0072A923 /* AcmeMobile_iOSApp.swift */,
 				8B6603DD29DD8EAE0072A923 /* Assets.xcassets */,
 				8B6603DF29DD8EAE0072A923 /* Preview Content */,
-				8B5C04FD29DE0471001674B3 /* GlobalVariables.swift */,
 			);
 			path = "AcmeMobile-iOS";
 			sourceTree = "<group>";
@@ -234,7 +233,6 @@
 		8B9BED7E29DD92C000E7C0A5 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				8B26205829DEE9AD00539B88 /* UserViewModel.swift */,
 				8B9554F629DF3B790012DA14 /* FirebaseManager.swift */,
 				8B9554F829DF3BE50012DA14 /* MainViewModel.swift */,
 				8B9C75CC29E2E8DD00EEF7D1 /* LocationManager.swift */,
@@ -267,6 +265,8 @@
 				8B26205F29DEF42000539B88 /* FirebaseStorage */,
 				8BE9E06029E0072600A506E9 /* GoogleSignIn */,
 				8BE9E06229E0072700A506E9 /* GoogleSignInSwift */,
+				8BA2ED6429E7450E00D5CAF4 /* CocoaMQTT */,
+				8BA2ED6629E7450E00D5CAF4 /* CocoaMQTTWebSocket */,
 			);
 			productName = "AcmeMobile-iOS";
 			productReference = 8B6603D629DD8EAB0072A923 /* AcmeMobile-iOS.app */;
@@ -344,6 +344,7 @@
 				8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */,
 				8B26205529DEE94700539B88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				8BE9E05F29E0072600A506E9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				8BA2ED6329E7450E00D5CAF4 /* XCRemoteSwiftPackageReference "CocoaMQTT" */,
 			);
 			productRefGroup = 8B6603D729DD8EAB0072A923 /* Products */;
 			projectDirPath = "";
@@ -392,7 +393,6 @@
 				8B9BED8029DD92E800E7C0A5 /* LoginView.swift in Sources */,
 				8B9554F729DF3B790012DA14 /* FirebaseManager.swift in Sources */,
 				8BAB7F6929E0415500ECD924 /* SettingsView.swift in Sources */,
-				8B26205929DEE9AD00539B88 /* UserViewModel.swift in Sources */,
 				8B26205029DEE4EB00539B88 /* ProfileView.swift in Sources */,
 				8B9554FB29DF3C920012DA14 /* LoadingView.swift in Sources */,
 				8B9554F929DF3BE50012DA14 /* MainViewModel.swift in Sources */,
@@ -402,7 +402,6 @@
 				8B26204E29DECEEC00539B88 /* TripModel.swift in Sources */,
 				8B9BED8629DDCD3E00E7C0A5 /* HomeView.swift in Sources */,
 				8B5C050029DE07B7001674B3 /* TripDetailView.swift in Sources */,
-				8B5C04FE29DE0471001674B3 /* GlobalVariables.swift in Sources */,
 				8B9C75CF29E3335200EEF7D1 /* WeatherModel.swift in Sources */,
 				8B6603DA29DD8EAB0072A923 /* AcmeMobile_iOSApp.swift in Sources */,
 				8B26205229DEE57100539B88 /* BookmarksView.swift in Sources */,
@@ -755,6 +754,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		8BA2ED6329E7450E00D5CAF4 /* XCRemoteSwiftPackageReference "CocoaMQTT" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/emqx/CocoaMQTT.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		8BE9E05F29E0072600A506E9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -790,6 +797,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B5C04FA29DDFF17001674B3 /* XCRemoteSwiftPackageReference "MultiSlider" */;
 			productName = MultiSlider;
+		};
+		8BA2ED6429E7450E00D5CAF4 /* CocoaMQTT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8BA2ED6329E7450E00D5CAF4 /* XCRemoteSwiftPackageReference "CocoaMQTT" */;
+			productName = CocoaMQTT;
+		};
+		8BA2ED6629E7450E00D5CAF4 /* CocoaMQTTWebSocket */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8BA2ED6329E7450E00D5CAF4 /* XCRemoteSwiftPackageReference "CocoaMQTT" */;
+			productName = CocoaMQTTWebSocket;
 		};
 		8BE9E06029E0072600A506E9 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

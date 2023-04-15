@@ -11,8 +11,12 @@ import GoogleSignInSwift
 import Firebase
 import FirebaseFirestore
 import MapKit
+import CocoaMQTT
+import UserNotifications
+import BackgroundTasks
 
 class MainViewModel: ObservableObject {
+
     @Published var signedIn = false
     @Published var currentUser: User?
     @Published var isLoading: Bool = false
@@ -307,5 +311,43 @@ class MainViewModel: ObservableObject {
     }
 
 
-   
+
+    func connectMQTT() {
+
+        let mqttClient = CocoaMQTT(clientID: "swift", host: "127.0.0.1", port: 1884)
+        let _ = mqttClient.connect()
+        mqttClient.didConnectAck = { mqtt, ack in
+            print("didConnectAck closure called with ack: \(ack.rawValue)")
+            if ack == .accept {
+                print("Connection established successfully.")
+                mqttClient.subscribe("topic/test")
+                mqttClient.didReceiveMessage = { mqtt, message, id in
+                    let content = UNMutableNotificationContent()
+                    content.title = "Attention Explorer!"
+                    content.subtitle = message.string ?? ""
+                    content.sound = UNNotificationSound.default
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                    UNUserNotificationCenter.current().add(request)
+                }
+            } else {
+                print("Failed to establish connection. Acknowledgment: \(ack.rawValue)")
+            }
+
+
+        }
+    }
+
+
+
+}
+
+func requestNotif(){
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+        if success {
+            print("All set!")
+        } else if let error = error {
+            print(error.localizedDescription)
+        }
+    }
 }
