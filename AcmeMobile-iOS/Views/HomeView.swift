@@ -32,23 +32,24 @@ struct HomeView: View {
                 LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
 
                     ForEach(vm.trips) { trip in
-                        NavigationLink(destination: TripDetailView(trip: trip)) {
-                            if isFiltersOn {
-                                let isEndDateFilterValid = !isEndDateFilterChanged || trip.endDate <= endDate
-                                let isStartDateFilterValid = !isStartDateFilterChanged || trip.startDate >= startDate
-                                let isPriceRangeValid = trip.price >= valueArray[0] && trip.price <= valueArray[1]
-
-                                if (isFiltersOn && isEndDateFilterValid && isStartDateFilterValid && isPriceRangeValid) || !isFiltersOn {
+                        if trip.startDate > Date.now{
+                            NavigationLink(destination: TripDetailView(trip: trip)) {
+                                if isFiltersOn {
+                                    let isEndDateFilterValid = !isEndDateFilterChanged || trip.endDate <= endDate
+                                    let isStartDateFilterValid = !isStartDateFilterChanged || trip.startDate >= startDate
+                                    let isPriceRangeValid = trip.price >= valueArray[0] && trip.price <= valueArray[1]
+                                    
+                                    if (isFiltersOn && isEndDateFilterValid && isStartDateFilterValid && isPriceRangeValid) || !isFiltersOn {
+                                        tripItem(trip: trip, isCompactOn: $isCompactOn)
+                                        
+                                    }
+                                } else {
                                     tripItem(trip: trip, isCompactOn: $isCompactOn)
-
                                 }
-                            } else {
-                                tripItem(trip: trip, isCompactOn: $isCompactOn)
+                                
                             }
-
+                            .accentColor(.primary)
                         }
-                        .accentColor(.primary)
-
                         }
                 }
                 .padding(.top, 100)
@@ -68,15 +69,14 @@ struct HomeView: View {
                         filterButton(title: "Filters", icon: "slider.horizontal.3", isOn: $isFiltersOn) {
                             showFiltersSheet = true
                         }
+
                         filterButton(title: "Compact View", icon: "rectangle.split.3x1", isOn: $isCompactOn) {
                             withAnimation {
                                 isCompactOn.toggle()
                             }
 
                         }
-                        filterButton(title: "Map", icon: "map", isOn: $isMapOn) {
-                            //
-                        }
+
                     }
 
 

@@ -27,20 +27,6 @@ class MainViewModel: ObservableObject {
 
     private var usersListener: ListenerRegistration?
 
-    /*func fetchCurrentUser() async {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
-
-        do{
-            let user = try await FirebaseManager.shared.firestore.collection("Users").document(uid).getDocument(as: User.self)
-
-            await MainActor.run(body: {
-                self.currentUser = user
-            })
-        }catch{
-            
-        }
-    }*/
-
     func fetchCurrentUser() {
         guard let userUID = FirebaseManager.shared.auth.currentUser?.uid else { return }
 
@@ -207,7 +193,6 @@ class MainViewModel: ObservableObject {
 
     func createTrip(trip: Trip) {
         do{
-
             try FirebaseManager.shared.firestore.collection("Trips").document(trip.UID).setData(from: trip, merge: true)
             print("Setted trip to firebase")
         }catch{
@@ -238,10 +223,10 @@ class MainViewModel: ObservableObject {
     }
 
 
-    func addRandomTripsToFirestore() {
+    /*func addRandomTripsToFirestore() {
         let cities = ["San Franc.", "New York", "Almeria", "Seoul", "Sofia", "Budapest", "Tokyo", "Paris"]
         let cityImages = [        "San Franc.": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/elle-los-angeles02-1559906859.jpg",        "New York": "https://media.timeout.com/images/105124812/image.jpg",        "Almeria": "https://media.traveler.es/photos/61375dc1bae07f0d8a49206d/master/w_1600%2Cc_limit/209774.jpg",        "Seoul": "https://media.cntraveler.com/photos/6123f6bb7dfe5dff926c7675/3:2/w_2529,h_1686,c_limit/South%20Korea_GettyImages-1200320719.jpg",        "Sofia": "https://www.adonde-y-cuando.es/site/images/illustration/oualler/bulgarie-sofia_702.jpg",        "Budapest": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/budapest-danubio-parlamento-1552491234.jpg",        "Tokyo": "https://planetofhotels.com/guide/sites/default/files/styles/node__blog_post__bp_banner/public/live_banner/Tokyo.jpg",        "Paris": "https://elpachinko.com/wp-content/uploads/2019/03/10-lugares-imprescindibles-que-visitar-en-Par%C3%ADs.jpg"]
-        let cityCoordinates = [        "San Franc.": CLLocationCoordinate2D(latitude: 37.773972, longitude: -122.431297),        "New York": CLLocationCoordinate2D(latitude: 40.730610, longitude: -73.935242),        "Almeria": CLLocationCoordinate2D(latitude:  36.838139, longitude: -2.459740),        "Seoul": CLLocationCoordinate2D(latitude: 127.024612, longitude: 37.532600),        "Sofia": CLLocationCoordinate2D(latitude: 42.698334, longitude: 23.319941),        "Budapest": CLLocationCoordinate2D(latitude: 47.497913, longitude: 19.0402362),        "Tokyo": CLLocationCoordinate2D(latitude: 139.839478, longitude: 35.652832),        "Paris": CLLocationCoordinate2D(latitude: 2.349014, longitude: 48.864716)] as [String : CLLocationCoordinate2D]
+        let cityCoordinates = [        "San Franc.": CLLocationCoordinate2D(latitude: 37.773972, longitude: -122.431297),        "New York": CLLocationCoordinate2D(latitude: 40.730610, longitude: -73.935242),        "Almeria": CLLocationCoordinate2D(latitude:  36.838139, longitude: -2.459740),        "Seoul": CLLocationCoordinate2D(latitude: 37.532600, longitude:  127.024612),        "Sofia": CLLocationCoordinate2D(latitude: 42.698334, longitude: 23.319941),        "Budapest": CLLocationCoordinate2D(latitude: 47.497913, longitude: 19.0402362),        "Tokyo": CLLocationCoordinate2D(latitude: 35.652832, longitude: 139.839478),        "Paris": CLLocationCoordinate2D(latitude: 2.349014, longitude: 48.864716)] as [String : CLLocationCoordinate2D]
         let today = Date()
         for _ in 0..<10 {
             var fromCity = ""
@@ -270,7 +255,7 @@ class MainViewModel: ObservableObject {
 
         }
 
-    }
+    }*/
 
     func bookmarkTrip(tripID: String) {
         guard let user = currentUser else { return }

@@ -9,23 +9,22 @@ import SwiftUI
 
 struct BookmarksView: View {
     @EnvironmentObject var vm: MainViewModel
-    var body: some View {
-        NavigationStack{
-            ZStack{
-                ScrollView(){
 
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                ScrollView {
                     ForEach(vm.trips) { trip in
-                        if(vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false){
+                        if vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false {
                             NavigationLink(destination: TripDetailView(trip: trip)) {
                                 tripItem(trip: trip)
                             }
                             .accentColor(.primary)
                         }
-
                     }
-
-                }.scrollIndicators(.hidden)
-                    .padding(.horizontal)
+                }
+                .scrollIndicators(.hidden)
+                .padding(.horizontal)
             }
             .navigationTitle("Bookmarks")
             .navigationBarTitleDisplayMode(.inline)
@@ -33,15 +32,14 @@ struct BookmarksView: View {
     }
 
     func tripItem(trip: Trip) -> some View {
-
-        var bookmarkButton: some View{
+        var bookmarkButton: some View {
             Image(systemName: vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false ? "bookmark.fill" : "bookmark")
                 .onTapGesture {
                     vm.bookmarkTrip(tripID: trip.UID)
                 }
         }
 
-        return VStack{
+        return VStack {
             tripImageView(url: trip.imageURL, maxHeight: 200)
 
             HStack(alignment: .bottom, spacing: 4) {
@@ -53,19 +51,15 @@ struct BookmarksView: View {
                 Text(trip.destination)
                     .font(.callout)
 
+                Spacer()
 
-                    Spacer()
+                Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
+                    .fontWeight(.bold)
 
-                    Text(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")
-                        .fontWeight(.bold)
-
-                    bookmarkButton
-
-
+                bookmarkButton
             }
 
             HStack(alignment: .bottom, spacing: 4) {
-
                 Text(formatDate(trip.startDate))
                     .font(.footnote)
                 Text("-")
@@ -74,22 +68,8 @@ struct BookmarksView: View {
                 Text(formatDate(trip.endDate))
                     .font(.footnote)
 
-
-                    Spacer()
-
-
+                Spacer()
             }
-
-
-
         }
-
-
-    }
-}
-
-struct BookmarksView_Previews: PreviewProvider {
-    static var previews: some View {
-        BookmarksView()
     }
 }

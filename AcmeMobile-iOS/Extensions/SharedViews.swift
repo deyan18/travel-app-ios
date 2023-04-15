@@ -57,7 +57,7 @@ struct customButton: View {
         }
     }
     
-    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .blue,iconName: String = "", smallFont: Bool = false, action: @escaping () -> Void ) {
+    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .accentColor,iconName: String = "", smallFont: Bool = false, action: @escaping () -> Void ) {
         self.title = title
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor

@@ -15,6 +15,8 @@ struct TripDetailView: View {
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
     @State private var weather: WeatherModel?
 
+
+
     
     var body: some View {
         ScrollView{
@@ -50,10 +52,10 @@ struct TripDetailView: View {
             }
 
 
-            customButton(title: vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false ? "Trip Purchased" : "Purchase", backgroundColor: .accentColor, foregroundColor: .white, iconName: "cart"){
+            customButton(title: (vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false ? "Trip Purchased" : ( trip.startDate < Date.now ? "Trip not available" : "Purchase")) , backgroundColor: .accentColor, foregroundColor: .white, iconName: "cart"){
                 showingPurchaseAlert.toggle()
             }
-            .disabled(vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false)
+            .disabled((vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false) || trip.startDate < Date.now)
             .padding(.horizontal,40)
             .padding(.top, 10)
             .alert(isPresented: $showingPurchaseAlert) {
@@ -104,9 +106,15 @@ struct TripDetailView: View {
             }
     }
 
-    func setRegion(){
-        region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: trip.originCoordinate.latitude, longitude: trip.originCoordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    func setRegion() {
+        region = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: trip.destinationCoordinate.latitude, longitude: trip.destinationCoordinate.longitude),
+            span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
+        )
     }
+
+
+
 
     var weatherView: some View{
         VStack {
@@ -116,6 +124,7 @@ struct TripDetailView: View {
                     if let url = weather!.iconURL {
                         AsyncImage(url: url) { image in
                             image
+                                .shadow(color: .gray, radius: 5)
                         } placeholder: {
                             ProgressView()
                         }
@@ -137,13 +146,13 @@ struct TripDetailView: View {
                 HStack(spacing: 14) {
                     Label(weather!.maxTemperature, systemImage: "thermometer.sun.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.black, .red)
+                        .foregroundStyle(.primary, .red)
                     Label(weather!.minTemperature, systemImage: "thermometer.snowflake")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.black, .blue)
+                        .foregroundStyle(.primary, .blue)
                     Label(weather!.humidity, systemImage: "humidity.fill")
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(.black, .blue)
+                        .foregroundStyle(.primary, .blue)
                 }
 
                 Spacer()

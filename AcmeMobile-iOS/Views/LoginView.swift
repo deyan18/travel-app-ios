@@ -10,7 +10,6 @@ import Firebase
 import FirebaseFirestore
 import FirebaseStorage
 
-
 enum LoginViewState {
     case logIn
     case signUp
@@ -30,25 +29,22 @@ struct LoginView: View {
 
     @State var img: UIImage = UIImage(named: "EmptyImage")!
     private var textFieldBgColor = Color.white.opacity(0.7)
-    
-    
+
+
     var body: some View {
         ZStack{
+            Rectangle().fill(Color.accentColor.gradient)
+                .ignoresSafeArea(.all)
             VStack {
                 if loginViewState != .signUp {
                     Image("LogoWhite")
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .onTapGesture {
-                            email = "ttest@email.com"
-                            password = "11111111"
-                            loginUser()
-                        }
                 }
 
                 customTitle(text: loginViewState == .logIn ? "Log In" : loginViewState == .signUp ? "Register" : "Forgot Password", foregroundColor: .white)
                     .padding(.bottom,loginViewState == .signUp ? 10 : 30)
-                
+
                 switch loginViewState {
                 case .logIn:
                     emailField
@@ -66,23 +62,15 @@ struct LoginView: View {
                     emailField
                     customButton(title: "Send Email", action: recoverPassword)
                 }
-                
+
                 bottomButtons
-                
+
             }.padding(35)
 
-            
+
         }
         .frame(maxHeight: .infinity)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [.accentColor, .blue]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            
-            .edgesIgnoringSafeArea(.all))
-        
+
     }
 
     var emailField: some View{
@@ -92,7 +80,7 @@ struct LoginView: View {
     var passwordField: some View{
         customSecureField(title: "Password", text: $password, backgroundColor: textFieldBgColor)
     }
-    
+
     var bottomButtons: some View{
         HStack{
 
@@ -102,22 +90,22 @@ struct LoginView: View {
                     withAnimation {
                         loginViewState = .signUp
                     }
-                    
+
                 }
             case .signUp, .forgotPassword:
                 customButton(title: "Log In", iconName: "chevron.backward") {
                     withAnimation {
                         loginViewState = .logIn
                     }
-                    
+
                 }
-                
+
             }
 
             customButton(title: "Google", action: {vm.googleLogin()})
-                }
-                .padding(.top, 40)
-        
+        }
+        .padding(.top, 40)
+
     }
 
     var forgotPassword: some View{
@@ -125,7 +113,7 @@ struct LoginView: View {
             withAnimation {
                 loginViewState = .forgotPassword
             }
-            
+
         }) {
             Text("Forgot your password?")
                 .foregroundColor(.white)
@@ -196,8 +184,6 @@ struct LoginView: View {
             }
         }
     }
-
-
 
     func validateFields() -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
