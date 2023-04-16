@@ -19,19 +19,32 @@ struct BookmarksView: View {
     }
 
     var tripsList: some View {
-        ScrollView {
-            ForEach(vm.trips) { trip in
-                if vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false {
-                    NavigationLink(destination: TripDetailView(trip: trip)) {
-                        tripItem(trip: trip)
-                            .frame(maxWidth: 600)
+        let bookmarkedTrips = vm.trips.filter { trip in
+            vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false
+        }
+
+        return VStack {
+            if bookmarkedTrips.isEmpty {
+                Spacer()
+                Text("You haven't bookmarked any trips yet")
+                    .font(.footnote)
+                Spacer()
+            } else {
+                ScrollView {
+                    ForEach(bookmarkedTrips) { trip in
+
+                            NavigationLink(destination: TripDetailView(trip: trip)) {
+                                tripItem(trip: trip)
+                                    .frame(maxWidth: 600)
+                            }
+                            .accentColor(.primary)
+                        
                     }
-                    .accentColor(.primary)
                 }
+                .scrollIndicators(.hidden)
+                .padding(.horizontal)
             }
         }
-        .scrollIndicators(.hidden)
-        .padding(.horizontal)
     }
 
     func tripItem(trip: Trip) -> some View {

@@ -40,22 +40,35 @@ struct ProfileView: View {
     }
 
     var tripsList: some View {
-        ScrollView {
-            Spacer()
-                .frame(height: 170)
-            ForEach(vm.trips) { trip in
-                if vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false {
-                    NavigationLink(destination: TripDetailView(trip: trip)) {
-                        tripItem(trip: trip)
-                            .frame(maxWidth: 600)
-                    }
-                    .accentColor(.primary)
-                }
-            }
-            Spacer()
+        let purchasedTrips = vm.trips.filter { trip in
+            vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false
         }
-        .scrollIndicators(.hidden)
-        .padding(.horizontal)
+
+        return VStack{
+            if purchasedTrips.isEmpty {
+                Spacer()
+                Text("You haven't purchased any trips yet")
+                    .font(.footnote)
+                Spacer()
+            } else{
+                ScrollView {
+                    Spacer()
+                        .frame(height: 170)
+
+                    ForEach(purchasedTrips) { trip in
+                            NavigationLink(destination: TripDetailView(trip: trip)) {
+                                tripItem(trip: trip)
+                                    .frame(maxWidth: 600)
+                            }
+                            .accentColor(.primary)
+                        
+                    }
+                    Spacer()
+                }
+                .scrollIndicators(.hidden)
+                .padding(.horizontal)
+            }
+        }
     }
 
     var settingsButton: some View {
