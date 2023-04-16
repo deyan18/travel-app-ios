@@ -14,8 +14,6 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack{
 
-
-
             ZStack{
                 ScrollView() {
 
@@ -41,6 +39,10 @@ struct ProfileView: View {
                     VStack{
 
                         profileImageView(url: vm.currentUser?.pfpURL ?? "", size:80)
+                            .onTapGesture(count: 3) {
+                                vm.devMode.toggle()
+                                vm.alertUser(vm.devMode ? "Developer mode activated" : "Developer mode deactivated")
+                            }
                         Text(vm.currentUser?.name ?? "")
                             .font(.headline)
                         settingsButton

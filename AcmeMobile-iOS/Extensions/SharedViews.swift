@@ -68,12 +68,13 @@ struct customButton: View {
 }
 
 
-func customTextField(title: String, text: Binding<String>, isLowerCase: Bool = false, backgroundColor: Color? = Color.gray.opacity(0.7)) -> some View {
+func customTextField(title: String, text: Binding<String>, isLowerCase: Bool = false, backgroundColor: Color? = Color.gray.opacity(0.7), isNumbersOnly: Bool = false) -> some View {
     TextField(title, text: text)
         .padding()
         .background(backgroundColor)
         .cornerRadius(10)
         .autocapitalization(isLowerCase ? .none : .words )
+        .keyboardType(isNumbersOnly ? .decimalPad : .default)
 }
 
 

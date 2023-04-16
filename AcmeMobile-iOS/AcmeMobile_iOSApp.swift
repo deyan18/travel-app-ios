@@ -14,6 +14,7 @@ import GoogleSignIn
 struct AcmeMobile_iOSApp: App {
     @StateObject var vm: MainViewModel = MainViewModel()
     @StateObject var lm: LocationManager = LocationManager()
+    
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
