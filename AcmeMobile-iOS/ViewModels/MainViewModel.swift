@@ -174,18 +174,16 @@ class MainViewModel: ObservableObject {
             self.isLoading = false
         })
     }
-
-    func createTrips(_ trips: [Trip]) {
+    
+    func uploadTrips(_ trips: [Trip]) {
         let batch = FirebaseManager.shared.firestore.batch()
 
         for trip in trips {
             do {
-                let tripData = try JSONEncoder().encode(trip)
-                let tripDict = try JSONSerialization.jsonObject(with: tripData, options: []) as? [String: Any]
                 let tripRef = FirebaseManager.shared.firestore.collection("Trips").document(trip.UID)
-                batch.setData(tripDict ?? [:], forDocument: tripRef, merge: true)
-            } catch let error {
-                self.setError(error)
+                try tripRef.setData(from: trip, merge: true)
+            } catch {
+                print("Error uploading trip:", error)
             }
         }
 
@@ -193,10 +191,14 @@ class MainViewModel: ObservableObject {
             if let error = error {
                 self.setError(error)
             } else {
-                self.alertUser("Trips uploaded to firestore. It may take some time for them to show.")
+                self.fetchTrips()
+                self.alertUser("Trips uploaded to Firestore.")
             }
         }
     }
+
+
+
 
 
     func fetchTrips() {
@@ -204,7 +206,7 @@ class MainViewModel: ObservableObject {
 
         tripsListener = FirebaseManager.shared.firestore
             .collection("Trips")
-            .order(by: "startDate")
+            //.order(by: "startDate")
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
                     print("Error:", error)
@@ -215,7 +217,7 @@ class MainViewModel: ObservableObject {
                     do {
                         try self.trips.append(queryDoc.data(as: Trip.self))
                     } catch {
-                        // print("Error fetching trip:", error)
+                         print("Error fetching trip:", error)
                     }
 
                 })
@@ -252,7 +254,7 @@ class MainViewModel: ObservableObject {
             trips.append(trip)
         }
 
-        createTrips(trips)
+        uploadTrips(trips)
     }
 
     func bookmarkTrip(tripID: String) {

@@ -127,7 +127,7 @@ struct TripDetailView: View {
                     }
 
                     VStack(alignment: .leading) {
-                        Text(weather!.city)
+                        Text(trip.destination)
                             .font(.title2)
                         Text(weather!.currentTemperature)
                             .font(.system(size: 50))

@@ -60,7 +60,7 @@ struct LoginView: View {
             .frame(maxWidth: 600)
             .padding(35)
         }
-        .frame(maxHeight: .infinity)
+        .colorScheme(.light)
     }
 
     var heading: some View{

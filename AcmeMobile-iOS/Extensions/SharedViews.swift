@@ -78,6 +78,7 @@ func customSecureField(title: String, text: Binding<String>, backgroundColor: Co
         .padding()
         .background(Color.white.opacity(0.7))
         .cornerRadius(10)
+
 }
 
 func customTitle(text: String, foregroundColor: Color = .black) -> some View {
