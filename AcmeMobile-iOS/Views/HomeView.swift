@@ -5,8 +5,8 @@
 //  Created by Deyan on 5/4/23.
 //
 
-import SwiftUI
 import MultiSlider
+import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var vm: MainViewModel
@@ -26,105 +26,103 @@ struct HomeView: View {
     @State private var valueArray: [CGFloat] = [-1.0, -1.0]
 
     var body: some View {
-        NavigationStack{
-        ZStack{
-            ScrollView(){
-                LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
-
-                    ForEach(vm.trips) { trip in
-                        if trip.startDate > Date.now{
-                            NavigationLink(destination: TripDetailView(trip: trip)) {
-                                if isFiltersOn {
-                                    let isEndDateFilterValid = !isEndDateFilterChanged || trip.endDate <= endDate
-                                    let isStartDateFilterValid = !isStartDateFilterChanged || trip.startDate >= startDate
-                                    let isPriceRangeValid = trip.price >= valueArray[0] && trip.price <= valueArray[1]
-                                    
-                                    if (isFiltersOn && isEndDateFilterValid && isStartDateFilterValid && isPriceRangeValid) || !isFiltersOn {
-                                        tripItem(trip: trip, isCompactOn: $isCompactOn)
-                                        
-                                    }
-                                } else {
-                                    tripItem(trip: trip, isCompactOn: $isCompactOn)
-                                }
-                                
-                            }
-                            .accentColor(.primary)
-                        }
-                        }
-                }
-                .padding(.top, 100)
-
-            }.scrollIndicators(.hidden)
-                .padding(.horizontal)
-
-            VStack{
-                VStack{
-                    HStack {
-                        searchBar(text: $searchOriginText, hint: "Origin") {
-                        }
-                        searchBar(text: $searchDestinationText, hint: "Destination") {
-                        }
-                    }
-                    HStack{
-                        filterButton(title: "Filters", icon: "slider.horizontal.3", isOn: $isFiltersOn) {
-                            showFiltersSheet = true
-                        }
-
-                        filterButton(title: "Compact View", icon: "rectangle.split.3x1", isOn: $isCompactOn) {
-                            withAnimation {
-                                isCompactOn.toggle()
-                            }
-
-                        }
-
-                    }
-
-
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                .background(.thinMaterial)
-                Spacer()
+        NavigationStack {
+            ZStack {
+                tripsList
+                topBar
             }
-
+            .sheet(isPresented: $showFiltersSheet) {
+                filtersSheetView
+                    .presentationDetents([.fraction(0.45)])
+                    .presentationDragIndicator(.visible)
+            }
         }
-        .sheet(isPresented: $showFiltersSheet) {
-            FiltersSheetView
-                .presentationDetents([.fraction(0.45)])
-                .presentationDragIndicator(.visible)
-        }
-        }
-        
     }
 
-    var FiltersSheetView: some View{
-        VStack{
+    var topBar: some View {
+        VStack {
+            VStack {
+                HStack {
+                    searchBar(text: $searchOriginText, hint: "Origin") {
+                    }
+                    searchBar(text: $searchDestinationText, hint: "Destination") {
+                    }
+                }
+                HStack {
+                    filterButton(title: "Filters", icon: "slider.horizontal.3", isOn: $isFiltersOn) {
+                        showFiltersSheet = true
+                    }
+
+                    filterButton(title: "Compact View", icon: "rectangle.split.3x1", isOn: $isCompactOn) {
+                        withAnimation {
+                            isCompactOn.toggle()
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top, 5)
+            .padding(.bottom, 10)
+            .background(.thinMaterial)
+            Spacer()
+        }
+    }
+
+    var tripsList: some View {
+        ScrollView {
+            LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
+                ForEach(vm.trips) { trip in
+                    if trip.startDate > Date.now {
+                        NavigationLink(destination: TripDetailView(trip: trip)) {
+                            if isFiltersOn {
+                                let isEndDateFilterValid = !isEndDateFilterChanged || trip.endDate <= endDate
+                                let isStartDateFilterValid = !isStartDateFilterChanged || trip.startDate >= startDate
+                                let isPriceRangeValid = trip.price >= valueArray[0] && trip.price <= valueArray[1]
+
+                                if (isFiltersOn && isEndDateFilterValid && isStartDateFilterValid && isPriceRangeValid) || !isFiltersOn {
+                                    tripItem(trip: trip, isCompactOn: $isCompactOn)
+                                }
+                            } else {
+                                tripItem(trip: trip, isCompactOn: $isCompactOn)
+                            }
+                        }
+                        .accentColor(.primary)
+                    }
+                }
+            }
+            .padding(.top, 100)
+        }
+        .scrollIndicators(.hidden)
+        .padding(.horizontal)
+    }
+
+    var filtersSheetView: some View {
+        VStack {
             Text("Filters")
                 .font(.title2)
                 .fontDesign(.rounded)
                 .fontWeight(.medium)
             DatePicker(selection: $startDate, in: Date.now..., displayedComponents: .date) {
                 Text("Start date: ")
-            }.onChange(of: startDate, perform: { newValue in
+            }.onChange(of: startDate, perform: { _ in
                 isStartDateFilterChanged = true
             })
 
-
             DatePicker(selection: $endDate, in: startDate..., displayedComponents: .date) {
                 Text("End date: ")
-            }.onChange(of: endDate, perform: { newValue in
+            }.onChange(of: endDate, perform: { _ in
                 isEndDateFilterChanged = true
             })
 
-            HStack{
+            HStack {
                 Text("Price range: ")
 
-                MultiValueSlider(value: $valueArray, minimumValue: vm.trips.min(by: { $0.price < $1.price })?.price ?? 0.0, maximumValue: vm.trips.max(by: { $0.price < $1.price })?.price ?? 0.0, snapStepSize: 1.0, valueLabelPosition: .top, orientation: .horizontal ,outerTrackColor: UIColor(Color.gray), valueLabelFormatter: PRICE_FORMATTER)
+                MultiValueSlider(value: $valueArray, minimumValue: vm.trips.min(by: { $0.price < $1.price })?.price ?? 0.0, maximumValue: vm.trips.max(by: { $0.price < $1.price })?.price ?? 0.0, snapStepSize: 1.0, valueLabelPosition: .top, orientation: .horizontal, outerTrackColor: UIColor(Color.gray), valueLabelFormatter: PRICE_FORMATTER)
                     .frame(height: 100)
             }
 
-            HStack{
-                if isFiltersOn{
+            HStack {
+                if isFiltersOn {
                     customButton(title: "Disable", backgroundColor: .red, foregroundColor: .white) {
                         isFiltersOn = false
                         isStartDateFilterChanged = false
@@ -132,13 +130,12 @@ struct HomeView: View {
                         startDate = Date.now
                         endDate = Date.now
                         showFiltersSheet.toggle()
-                        
                     }
 
                     customButton(title: "Close", backgroundColor: .gray.opacity(0.7), foregroundColor: .white) {
                         showFiltersSheet.toggle()
                     }
-                }else{
+                } else {
                     customButton(title: "Enable", backgroundColor: .accentColor, foregroundColor: .white) {
                         isFiltersOn = true
                         showFiltersSheet.toggle()
@@ -146,16 +143,14 @@ struct HomeView: View {
                 }
             }
 
-
         }.padding()
-            .onAppear{
-                if(valueArray == [-1.0, -1.0]){
+            .onAppear {
+                if valueArray == [-1.0, -1.0] {
                     valueArray = [vm.trips.min(by: { $0.price < $1.price })?.price ?? 0.0, vm.trips.max(by: { $0.price < $1.price })?.price ?? 0.0]
                 }
-
             }
     }
-    
+
     func searchBar(text: Binding<String>, hint: String = "Search", onSearchTapped: @escaping () -> Void) -> some View {
         HStack {
             Image(systemName: "magnifyingglass")
@@ -178,10 +173,10 @@ struct HomeView: View {
         .background(Color.gray.opacity(0.2))
         .cornerRadius(10)
     }
-    
+
     func filterButton(title: String, icon: String, isOn: Binding<Bool>, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack{
+            HStack {
                 Image(systemName: icon)
                 Text(title)
             }
@@ -194,15 +189,14 @@ struct HomeView: View {
     }
 
     func tripItem(trip: Trip, isCompactOn: Binding<Bool> = Binding.constant(false)) -> some View {
-
-        var bookmarkButton: some View{
+        var bookmarkButton: some View {
             Image(systemName: vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false ? "bookmark.fill" : "bookmark")
                 .onTapGesture {
                     vm.bookmarkTrip(tripID: trip.UID)
                 }
         }
 
-        return VStack{
+        return VStack {
             tripImageView(url: trip.imageURL, maxHeight: 200)
 
             HStack(alignment: .bottom, spacing: 4) {
@@ -222,23 +216,20 @@ struct HomeView: View {
 
                     bookmarkButton
                 }
-
             }
 
             HStack(alignment: .bottom, spacing: 4) {
-
                 Text(formatDate(trip.startDate))
-                    .font(isCompactOn.wrappedValue ? .caption: .footnote)
+                    .font(isCompactOn.wrappedValue ? .caption : .footnote)
                 Text("-")
                     .font(.caption)
                     .fontWeight(.light)
                 Text(formatDate(trip.endDate))
-                    .font(isCompactOn.wrappedValue ? .caption: .footnote)
+                    .font(isCompactOn.wrappedValue ? .caption : .footnote)
 
                 if !isCompactOn.wrappedValue {
                     Spacer()
                 }
-
             }
 
             if isCompactOn.wrappedValue {
@@ -249,18 +240,6 @@ struct HomeView: View {
                     bookmarkButton
                 }
             }
-
-
         }
-
-
     }
-    
-    
 }
-
-
-
-
-
-

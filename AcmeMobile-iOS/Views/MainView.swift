@@ -10,11 +10,8 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var vm: MainViewModel
     var body: some View {
-        ZStack{
-
-
+        ZStack {
             if vm.signedIn {
-                
                 TabView {
                     HomeView()
                         .tabItem {
@@ -29,14 +26,12 @@ struct MainView: View {
                             Label("Profile", systemImage: "person")
                         }
                 }.background(.ultraThickMaterial)
-            }else{
+            } else {
                 LoginView()
             }
 
             LoadingView()
 
         }.alert(vm.alertMessage, isPresented: $vm.showAlert, actions: {})
-        
     }
 }
-

@@ -17,13 +17,12 @@ func setPriceFormatter() -> NumberFormatter {
 
 let PRICE_FORMATTER = setPriceFormatter()
 
-func formatDate(_ date: Date) -> String{
+func formatDate(_ date: Date) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "dd/MM/yyyy"
 
     return formatter.string(from: date)
 }
-
 
 struct customButton: View {
     var title: String
@@ -32,20 +31,19 @@ struct customButton: View {
     var action: () -> Void
     var iconName: String
     var smallFont: Bool
-    
+
     var body: some View {
         Button(action: action) {
-            HStack{
-                if title == "Google"{
+            HStack {
+                if title == "Google" {
                     Image("GoogleIcon")
                         .resizable()
                         .frame(width: 20, height: 20)
 
-                }else if iconName != "" {
-                        Image(systemName: iconName)
+                } else if iconName != "" {
+                    Image(systemName: iconName)
                 }
                 Text(title == "Google" ? "" : title)
-
             }
             .font(smallFont ? .footnote : .headline)
             .foregroundColor(foregroundColor)
@@ -53,11 +51,10 @@ struct customButton: View {
             .padding()
             .background(backgroundColor)
             .cornerRadius(15.0)
-
         }
     }
-    
-    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .accentColor,iconName: String = "", smallFont: Bool = false, action: @escaping () -> Void ) {
+
+    init(title: String, backgroundColor: Color = .white, foregroundColor: Color = .accentColor, iconName: String = "", smallFont: Bool = false, action: @escaping () -> Void) {
         self.title = title
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
@@ -67,16 +64,14 @@ struct customButton: View {
     }
 }
 
-
 func customTextField(title: String, text: Binding<String>, isLowerCase: Bool = false, backgroundColor: Color? = Color.gray.opacity(0.7), isNumbersOnly: Bool = false) -> some View {
     TextField(title, text: text)
         .padding()
         .background(backgroundColor)
         .cornerRadius(10)
-        .autocapitalization(isLowerCase ? .none : .words )
+        .autocapitalization(isLowerCase ? .none : .words)
         .keyboardType(isNumbersOnly ? .decimalPad : .default)
 }
-
 
 func customSecureField(title: String, text: Binding<String>, backgroundColor: Color? = Color.gray.opacity(0.7)) -> some View {
     SecureField(title, text: text)
@@ -91,11 +86,7 @@ func customTitle(text: String, foregroundColor: Color = .black) -> some View {
         .fontDesign(.rounded)
         .foregroundColor(foregroundColor)
         .fontWeight(.bold)
-
 }
-
-
-
 
 struct UploadImageButton: View {
     @State var showImagePicker = false
@@ -122,8 +113,7 @@ struct UploadImageButton: View {
                     .frame(width: 100, height: 100)
                     .background(Image(systemName: "camera.fill").foregroundColor(.primary))
                     .background(
-                        AsyncImage(url: URL(string: url))
-                        { image in
+                        AsyncImage(url: URL(string: url)) { image in
                             image.resizable()
                                 .aspectRatio(contentMode: .fill)
                         } placeholder: {
@@ -139,8 +129,7 @@ struct UploadImageButton: View {
 }
 
 func tripImageView(url: String, cornerRadius: CGFloat = 15, maxHeight: CGFloat = 250) -> some View {
-    AsyncImage(url: URL(string: url))
-    { image in
+    AsyncImage(url: URL(string: url)) { image in
         image.resizable()
 
     } placeholder: {
@@ -152,20 +141,16 @@ func tripImageView(url: String, cornerRadius: CGFloat = 15, maxHeight: CGFloat =
             .overlay {
                 ProgressView()
             }
-
     }
     .aspectRatio(contentMode: .fill)
     .frame(maxHeight: maxHeight)
     .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-
 }
-
 
 func profileImageView(url: String, size: CGFloat = 50) -> some View {
     let cornerRadius: CGFloat = 100
 
-    return AsyncImage(url: URL(string: url))
-    { image in
+    return AsyncImage(url: URL(string: url)) { image in
         image.resizable()
             .scaledToFill()
             .frame(maxWidth: size, maxHeight: size)
@@ -178,8 +163,5 @@ func profileImageView(url: String, size: CGFloat = 50) -> some View {
             .overlay {
                 ProgressView()
             }
-
     }
-
 }
-

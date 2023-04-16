@@ -5,18 +5,17 @@
 //  Created by Deyan on 6/4/23.
 //
 
+import BackgroundTasks
+import CocoaMQTT
+import Firebase
+import FirebaseFirestore
 import Foundation
 import GoogleSignIn
 import GoogleSignInSwift
-import Firebase
-import FirebaseFirestore
 import MapKit
-import CocoaMQTT
 import UserNotifications
-import BackgroundTasks
 
 class MainViewModel: ObservableObject {
-
     @Published var signedIn = false
     @Published var currentUser: User?
     @Published var isLoading: Bool = false
@@ -30,10 +29,8 @@ class MainViewModel: ObservableObject {
     @Published var MQTTPort = "1884"
     @Published var MQTTTopic = "acmeExplorer"
 
-
     private var usersListener: ListenerRegistration?
     private var tripsListener: ListenerRegistration?
-
 
     func fetchCurrentUser() {
         guard let userUID = FirebaseManager.shared.auth.currentUser?.uid else { return }
@@ -63,10 +60,9 @@ class MainViewModel: ObservableObject {
             }
     }
 
-
-    func alertUser(_ message: String){
+    func alertUser(_ message: String) {
         alertMessage = message
-        self.isLoading = false
+        isLoading = false
         showAlert.toggle()
     }
 
@@ -75,24 +71,19 @@ class MainViewModel: ObservableObject {
     }
 
     func signOut() {
-        self.signedIn = false
+        signedIn = false
         try? FirebaseManager.shared.auth.signOut()
     }
 
-    func googleLogin(){
-
-        self.isLoading = true
+    func googleLogin() {
+        isLoading = true
 
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
-
 
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
 
         GIDSignIn.sharedInstance.configuration = config
-
-
 
         GIDSignIn.sharedInstance.signIn(withPresenting: UIApplication.shared.getRootViewController()) { user, error in
             if let error = error {
@@ -110,8 +101,6 @@ class MainViewModel: ObservableObject {
                 return
             }
 
-
-
             let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
 
             let config = GIDConfiguration(clientID: clientID)
@@ -119,7 +108,7 @@ class MainViewModel: ObservableObject {
             GIDSignIn.sharedInstance.configuration = config
 
             // Firebase Authentication
-            Auth.auth().signIn(with: credential) {result, err in
+            Auth.auth().signIn(with: credential) { result, err in
                 self.isLoading = false
                 if let err = err {
                     print(err.localizedDescription)
@@ -130,8 +119,8 @@ class MainViewModel: ObservableObject {
                     return
                 }
 
-                FirebaseManager.shared.firestore.collection("Users").document(userData.uid).getDocument { snapshot, error in
-                    if !snapshot!.exists{
+                FirebaseManager.shared.firestore.collection("Users").document(userData.uid).getDocument { snapshot, _ in
+                    if !snapshot!.exists {
                         let user = User(UID: userData.uid, email: userData.email ?? "", name: userData.displayName ?? "", pfpURL: userData.photoURL?.absoluteString ?? "")
                         self.saveUserData(user)
                         self.fetchCurrentUser()
@@ -143,28 +132,21 @@ class MainViewModel: ObservableObject {
 
                 self.fetchCurrentUser()
                 self.fetchTrips()
-
             }
-
         }
-
-
     }
 
-    func saveUserData(_ user: User){
-
-        do{
+    func saveUserData(_ user: User) {
+        do {
             try FirebaseManager.shared.firestore.collection("Users").document(user.UID).setData(from: user, merge: true)
-        }catch{
-            self.setError(error)
+        } catch {
+            setError(error)
         }
     }
-    
 
     func deleteUserAccount() {
-        self.isLoading = true
+        isLoading = true
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
-
 
         FirebaseManager.shared.auth.currentUser?.delete(completion: { err in
             if let err = err {
@@ -188,18 +170,17 @@ class MainViewModel: ObservableObject {
                     self.signedIn = false
                 }
 
-
             self.isLoading = false
         })
     }
 
     func createTrip(trip: Trip) {
-        do{
+        do {
             try FirebaseManager.shared.firestore.collection("Trips").document(trip.UID).setData(from: trip, merge: true)
             print("Setted trip to firebase")
-        }catch{
+        } catch {
             print("Error Setting trip to firebase", error)
-            self.setError(error)
+            setError(error)
         }
     }
 
@@ -216,36 +197,35 @@ class MainViewModel: ObservableObject {
                 }
                 self.trips.removeAll()
                 querySnapshot?.documents.forEach({ queryDoc in
-                    do{
+                    do {
                         try self.trips.append(queryDoc.data(as: Trip.self))
-                    }catch{
-                        //print("Error fetching trip:", error)
+                    } catch {
+                        // print("Error fetching trip:", error)
                     }
 
                 })
             }
     }
 
-
     func addRandomTripsToFirestore() {
         let cities = ["San Franc.", "New York", "Almeria", "Seoul", "Sofia", "Budapest", "Tokyo", "Paris"]
-        let cityImages = [        "San Franc.": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/elle-los-angeles02-1559906859.jpg",        "New York": "https://media.timeout.com/images/105124812/image.jpg",        "Almeria": "https://media.traveler.es/photos/61375dc1bae07f0d8a49206d/master/w_1600%2Cc_limit/209774.jpg",        "Seoul": "https://media.cntraveler.com/photos/6123f6bb7dfe5dff926c7675/3:2/w_2529,h_1686,c_limit/South%20Korea_GettyImages-1200320719.jpg",        "Sofia": "https://www.adonde-y-cuando.es/site/images/illustration/oualler/bulgarie-sofia_702.jpg",        "Budapest": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/budapest-danubio-parlamento-1552491234.jpg",        "Tokyo": "https://planetofhotels.com/guide/sites/default/files/styles/node__blog_post__bp_banner/public/live_banner/Tokyo.jpg",        "Paris": "https://elpachinko.com/wp-content/uploads/2019/03/10-lugares-imprescindibles-que-visitar-en-Par%C3%ADs.jpg"]
-        let cityCoordinates = [        "San Franc.": CLLocationCoordinate2D(latitude: 37.773972, longitude: -122.431297),        "New York": CLLocationCoordinate2D(latitude: 40.730610, longitude: -73.935242),        "Almeria": CLLocationCoordinate2D(latitude:  36.838139, longitude: -2.459740),        "Seoul": CLLocationCoordinate2D(latitude: 37.532600, longitude:  127.024612),        "Sofia": CLLocationCoordinate2D(latitude: 42.698334, longitude: 23.319941),        "Budapest": CLLocationCoordinate2D(latitude: 47.497913, longitude: 19.0402362),        "Tokyo": CLLocationCoordinate2D(latitude: 35.652832, longitude: 139.839478),        "Paris": CLLocationCoordinate2D(latitude: 2.349014, longitude: 48.864716)] as [String : CLLocationCoordinate2D]
+        let cityImages = ["San Franc.": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/elle-los-angeles02-1559906859.jpg", "New York": "https://media.timeout.com/images/105124812/image.jpg", "Almeria": "https://media.traveler.es/photos/61375dc1bae07f0d8a49206d/master/w_1600%2Cc_limit/209774.jpg", "Seoul": "https://media.cntraveler.com/photos/6123f6bb7dfe5dff926c7675/3:2/w_2529,h_1686,c_limit/South%20Korea_GettyImages-1200320719.jpg", "Sofia": "https://www.adonde-y-cuando.es/site/images/illustration/oualler/bulgarie-sofia_702.jpg", "Budapest": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/budapest-danubio-parlamento-1552491234.jpg", "Tokyo": "https://planetofhotels.com/guide/sites/default/files/styles/node__blog_post__bp_banner/public/live_banner/Tokyo.jpg", "Paris": "https://elpachinko.com/wp-content/uploads/2019/03/10-lugares-imprescindibles-que-visitar-en-Par%C3%ADs.jpg"]
+        let cityCoordinates = ["San Franc.": CLLocationCoordinate2D(latitude: 37.773972, longitude: -122.431297), "New York": CLLocationCoordinate2D(latitude: 40.730610, longitude: -73.935242), "Almeria": CLLocationCoordinate2D(latitude: 36.838139, longitude: -2.459740), "Seoul": CLLocationCoordinate2D(latitude: 37.532600, longitude: 127.024612), "Sofia": CLLocationCoordinate2D(latitude: 42.698334, longitude: 23.319941), "Budapest": CLLocationCoordinate2D(latitude: 47.497913, longitude: 19.0402362), "Tokyo": CLLocationCoordinate2D(latitude: 35.652832, longitude: 139.839478), "Paris": CLLocationCoordinate2D(latitude: 2.349014, longitude: 48.864716)] as [String: CLLocationCoordinate2D]
         let today = Date()
-        for _ in 0..<10 {
+        for _ in 0 ..< 10 {
             var fromCity = ""
             var toCity = ""
             while fromCity == toCity {
                 fromCity = cities.randomElement()!
                 toCity = cities.randomElement()!
             }
-            let departureDate = Calendar.current.date(byAdding: .day, value: Int.random(in: 1...365), to: today)!
-            let returnDate = Calendar.current.date(byAdding: .day, value: Int.random(in: 1...7), to: departureDate)!
+            let departureDate = Calendar.current.date(byAdding: .day, value: Int.random(in: 1 ... 365), to: today)!
+            let returnDate = Calendar.current.date(byAdding: .day, value: Int.random(in: 1 ... 7), to: departureDate)!
             let trip = Trip(
                 UID: UUID().uuidString,
                 origin: fromCity,
                 destination: toCity,
-                price: Double(Int.random(in: 50...1000)),
+                price: Double(Int.random(in: 50 ... 1000)),
                 startDate: departureDate,
                 endDate: returnDate,
                 description: "A trip to \(toCity). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc scelerisque neque in risus aliquet laoreet. Nulla quis dapibus velit. Proin eu dolor ipsum. Morbi et orci a tortor luctus feugiat at quis dolor. Nullam vel mi leo. Fusce justo eros, accumsan id aliquam ac, pellentesque nec neque.",
@@ -253,21 +233,17 @@ class MainViewModel: ObservableObject {
                 originCoordinate: cityCoordinates[fromCity] ?? CLLocationCoordinate2D(),
                 destinationCoordinate: cityCoordinates[toCity] ?? CLLocationCoordinate2D()
             )
-                print("SUBIENDO TRIP:", trip)
-                createTrip(trip: trip)
-
-
+            print("SUBIENDO TRIP:", trip)
+            createTrip(trip: trip)
         }
-
     }
 
     func bookmarkTrip(tripID: String) {
         guard let user = currentUser else { return }
 
-
-        if user.bookmarkedTrips.contains(tripID){
+        if user.bookmarkedTrips.contains(tripID) {
             FirebaseManager.shared.firestore.collection("Users").document(user.UID).updateData([
-                "bookmarkedTrips": FieldValue.arrayRemove([tripID])
+                "bookmarkedTrips": FieldValue.arrayRemove([tripID]),
             ]) { error in
                 if let error = error {
                     print("Error removing trip from bookmarked trips: \(error.localizedDescription)")
@@ -275,42 +251,37 @@ class MainViewModel: ObservableObject {
             }
         } else {
             FirebaseManager.shared.firestore.collection("Users").document(user.UID).updateData([
-                "bookmarkedTrips": FieldValue.arrayUnion([tripID])
+                "bookmarkedTrips": FieldValue.arrayUnion([tripID]),
             ]) { error in
                 if let error = error {
                     print("Error adding trip to bookmarked trips: \(error.localizedDescription)")
                 }
             }
         }
-
     }
 
     func purchaseTrip(tripID: String) {
         guard let user = currentUser else { return }
-        if !user.purchasedTrips.contains(tripID){
+        if !user.purchasedTrips.contains(tripID) {
             FirebaseManager.shared.firestore.collection("Users").document(user.UID).updateData([
-                "purchasedTrips": FieldValue.arrayUnion([tripID])
+                "purchasedTrips": FieldValue.arrayUnion([tripID]),
             ]) { error in
                 if let error = error {
                     print("Error: \(error.localizedDescription)")
                 }
             }
         }
-
     }
 
-
-
     func connectMQTT() {
-
-        let mqttClient = CocoaMQTT(clientID: self.MQTTClientId, host: self.MQTTHost, port: UInt16(self.MQTTPort)!)
-        let _ = mqttClient.connect()
-        mqttClient.didConnectAck = { mqtt, ack in
+        let mqttClient = CocoaMQTT(clientID: MQTTClientId, host: MQTTHost, port: UInt16(MQTTPort)!)
+        _ = mqttClient.connect()
+        mqttClient.didConnectAck = { _, ack in
             print("didConnectAck closure called with ack: \(ack.rawValue)")
             if ack == .accept {
                 print("Connection established successfully.")
                 mqttClient.subscribe(self.MQTTTopic)
-                mqttClient.didReceiveMessage = { mqtt, message, id in
+                mqttClient.didReceiveMessage = { _, message, _ in
                     let content = UNMutableNotificationContent()
                     content.title = "Attention Explorer!"
                     content.subtitle = message.string ?? ""
@@ -322,21 +293,16 @@ class MainViewModel: ObservableObject {
             } else {
                 print("Failed to establish connection. Acknowledgment: \(ack.rawValue)")
             }
-
-
         }
     }
 
-
-
-}
-
-func requestNotif(){
-    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-        if success {
-            print("All set!")
-        } else if let error = error {
-            print(error.localizedDescription)
+    func requestNotif() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+            } else if let error = error {
+                self.setError(error)
+                print(error.localizedDescription)
+            }
         }
     }
 }

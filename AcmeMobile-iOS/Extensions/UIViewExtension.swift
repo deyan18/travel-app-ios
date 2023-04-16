@@ -6,18 +6,18 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
-extension UIApplication{
-    func getRect()->CGRect{
+extension UIApplication {
+    func getRect() -> CGRect {
         return UIScreen.main.bounds
     }
-    // retrieve RootView
-    func getRootViewController()->UIViewController{
-        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return . init()
 
+    // retrieve RootView
+    func getRootViewController() -> UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return .init()
         }
 
         guard let root = screen.windows.first?.rootViewController else {

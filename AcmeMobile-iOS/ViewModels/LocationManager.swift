@@ -9,8 +9,6 @@ import CoreLocation
 import CoreLocationUI
 import Firebase
 import SwiftUI
-import CocoaMQTT
-import CocoaMQTTWebSocket
 
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
@@ -48,6 +46,4 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         lastLocation = location
     }
-
-
 }

@@ -5,8 +5,8 @@
 //  Created by Deyan on 5/4/23.
 //
 
-import SwiftUI
 import MapKit
+import SwiftUI
 
 struct TripDetailView: View {
     @EnvironmentObject var vm: MainViewModel
@@ -15,13 +15,65 @@ struct TripDetailView: View {
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
     @State private var weather: WeatherModel?
 
-
-
-    
     var body: some View {
-        ScrollView{
+        ScrollView {
             tripImageView(url: trip.imageURL)
+            tripHeading
+            tripButton
+            tripDescription
 
+            weatherView
+                .padding(.vertical)
+
+            mapView
+                .padding(.bottom)
+
+        }.padding(.horizontal)
+            .scrollIndicators(.hidden)
+            .onAppear {
+                Task {
+                    weather = await getWeather(location: trip.destinationCoordinate)
+                }
+                setRegion()
+            }
+    }
+
+    var tripDescription: some View {
+        VStack {
+            HStack {
+                Text("Trip details")
+                    .font(.footnote)
+                    .fontWeight(.medium)
+                Spacer()
+            }.padding(.top)
+
+            Divider()
+            Text(trip.description)
+                .font(.footnote)
+        }
+    }
+
+    var tripButton: some View {
+        customButton(title: vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false ? "Trip Purchased" : (trip.startDate < Date.now ? "Trip not available" : "Purchase"), backgroundColor: .accentColor, foregroundColor: .white, iconName: "cart") {
+            showingPurchaseAlert.toggle()
+        }
+        .disabled((vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false) || trip.startDate < Date.now)
+        .padding(.horizontal, 40)
+        .padding(.top, 10)
+        .alert(isPresented: $showingPurchaseAlert) {
+            Alert(
+                title: Text("Purchase trip?"),
+                message: Text("Are you sure you want to purchase this trip for \(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")"),
+                primaryButton: .default(Text("Purchase")) {
+                    vm.purchaseTrip(tripID: trip.UID)
+                },
+                secondaryButton: .cancel()
+            )
+        }
+    }
+
+    var tripHeading: some View {
+        VStack {
             HStack(alignment: .bottom, spacing: 4) {
                 Text(trip.origin)
                     .font(.title2)
@@ -40,7 +92,6 @@ struct TripDetailView: View {
             }
 
             HStack(alignment: .bottom, spacing: 4) {
-
                 Text(formatDate(trip.startDate))
                     .font(.footnote)
                 Text("-")
@@ -50,60 +101,7 @@ struct TripDetailView: View {
                     .font(.footnote)
                 Spacer()
             }
-
-
-            customButton(title: (vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false ? "Trip Purchased" : ( trip.startDate < Date.now ? "Trip not available" : "Purchase")) , backgroundColor: .accentColor, foregroundColor: .white, iconName: "cart"){
-                showingPurchaseAlert.toggle()
-            }
-            .disabled((vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false) || trip.startDate < Date.now)
-            .padding(.horizontal,40)
-            .padding(.top, 10)
-            .alert(isPresented: $showingPurchaseAlert) {
-                Alert(
-                    title: Text("Purchase trip?"),
-                    message: Text("Are you sure you want to purchase this trip for \(PRICE_FORMATTER.string(from: NSNumber(value: trip.price)) ?? "")"),
-                    primaryButton: .default(Text("Purchase")) {
-                        vm.purchaseTrip(tripID: trip.UID)
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
-
-
-
-
-
-
-
-
-            HStack{
-                Text("Trip details")
-                    .font(.footnote)
-                    .fontWeight(.medium)
-                Spacer()
-            }.padding(.top)
-
-            Divider()
-            Text(trip.description)
-                .font(.footnote)
-
-
-            weatherView
-                .padding(.vertical)
-
-            mapView
-                .padding(.bottom)
-
-        }.padding(.horizontal)
-            .scrollIndicators(.hidden)
-            .onAppear{
-                Task{
-                    weather = await getWeather(location: trip.destinationCoordinate)
-
-                }
-                setRegion()
-
-            }
+        }
     }
 
     func setRegion() {
@@ -113,13 +111,9 @@ struct TripDetailView: View {
         )
     }
 
-
-
-
-    var weatherView: some View{
+    var weatherView: some View {
         VStack {
-            if weather != nil{
-
+            if weather != nil {
                 HStack {
                     if let url = weather!.iconURL {
                         AsyncImage(url: url) { image in
@@ -138,10 +132,7 @@ struct TripDetailView: View {
                             .foregroundColor(.primary)
                         Text(weather!.weather.description)
                             .font(.headline)
-
-
                     }
-
                 }
                 HStack(spacing: 14) {
                     Label(weather!.maxTemperature, systemImage: "thermometer.sun.fill")
@@ -164,7 +155,7 @@ struct TripDetailView: View {
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 
-    var bookmarkButton: some View{
+    var bookmarkButton: some View {
         Image(systemName: vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false ? "bookmark.fill" : "bookmark")
             .font(.title3)
             .padding(.top, 3)
@@ -173,18 +164,16 @@ struct TripDetailView: View {
             }
     }
 
-    var mapView: some View{
+    var mapView: some View {
         let annotations = [
             TripLocation(name: "Origin", coordinate: trip.originCoordinate),
-            TripLocation(name: "Destination", coordinate: trip.destinationCoordinate)
-
+            TripLocation(name: "Destination", coordinate: trip.destinationCoordinate),
         ]
         return Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: annotations) {
             MapMarker(coordinate: $0.coordinate, tint: .accentColor)
         }
-        .frame( height: 200)
+        .frame(height: 200)
         .clipShape(RoundedRectangle(cornerRadius: 15))
-
     }
 }
 

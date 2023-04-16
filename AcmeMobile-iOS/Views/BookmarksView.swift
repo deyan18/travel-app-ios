@@ -12,23 +12,25 @@ struct BookmarksView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                ScrollView {
-                    ForEach(vm.trips) { trip in
-                        if vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false {
-                            NavigationLink(destination: TripDetailView(trip: trip)) {
-                                tripItem(trip: trip)
-                            }
-                            .accentColor(.primary)
-                        }
-                    }
-                }
-                .scrollIndicators(.hidden)
-                .padding(.horizontal)
-            }
-            .navigationTitle("Bookmarks")
-            .navigationBarTitleDisplayMode(.inline)
+            tripsList
+                .navigationTitle("Bookmarks")
+                .navigationBarTitleDisplayMode(.inline)
         }
+    }
+
+    var tripsList: some View {
+        ScrollView {
+            ForEach(vm.trips) { trip in
+                if vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false {
+                    NavigationLink(destination: TripDetailView(trip: trip)) {
+                        tripItem(trip: trip)
+                    }
+                    .accentColor(.primary)
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
+        .padding(.horizontal)
     }
 
     func tripItem(trip: Trip) -> some View {
