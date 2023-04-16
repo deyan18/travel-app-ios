@@ -35,6 +35,7 @@ struct Trip: Identifiable, Codable {
         case originCoordinate
         case destinationCoordinate
     }
+
 }
 
 extension CLLocationCoordinate2D: Decodable {

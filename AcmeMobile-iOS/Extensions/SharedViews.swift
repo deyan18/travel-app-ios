@@ -70,7 +70,7 @@ func customTextField(title: String, text: Binding<String>, isLowerCase: Bool = f
         .background(backgroundColor)
         .cornerRadius(10)
         .autocapitalization(isLowerCase ? .none : .words)
-        .keyboardType(isNumbersOnly ? .decimalPad : .default)
+        .keyboardType(isNumbersOnly ? .numberPad : .default)
 }
 
 func customSecureField(title: String, text: Binding<String>, backgroundColor: Color? = Color.gray.opacity(0.7)) -> some View {

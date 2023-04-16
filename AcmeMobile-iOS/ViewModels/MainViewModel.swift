@@ -28,6 +28,7 @@ class MainViewModel: ObservableObject {
     @Published var MQTTHost = "127.0.0.1"
     @Published var MQTTPort = "1884"
     @Published var MQTTTopic = "acmeExplorer"
+    var mqttClient: CocoaMQTT = CocoaMQTT(clientID: "")
 
     private var usersListener: ListenerRegistration?
     private var tripsListener: ListenerRegistration?
@@ -174,15 +175,29 @@ class MainViewModel: ObservableObject {
         })
     }
 
-    func createTrip(trip: Trip) {
-        do {
-            try FirebaseManager.shared.firestore.collection("Trips").document(trip.UID).setData(from: trip, merge: true)
-            print("Setted trip to firebase")
-        } catch {
-            print("Error Setting trip to firebase", error)
-            setError(error)
+    func createTrips(_ trips: [Trip]) {
+        let batch = FirebaseManager.shared.firestore.batch()
+
+        for trip in trips {
+            do {
+                let tripData = try JSONEncoder().encode(trip)
+                let tripDict = try JSONSerialization.jsonObject(with: tripData, options: []) as? [String: Any]
+                let tripRef = FirebaseManager.shared.firestore.collection("Trips").document(trip.UID)
+                batch.setData(tripDict ?? [:], forDocument: tripRef, merge: true)
+            } catch let error {
+                self.setError(error)
+            }
+        }
+
+        batch.commit { (error) in
+            if let error = error {
+                self.setError(error)
+            } else {
+                self.alertUser("Trips uploaded to firestore. It may take some time for them to show.")
+            }
         }
     }
+
 
     func fetchTrips() {
         tripsListener?.remove()
@@ -208,6 +223,7 @@ class MainViewModel: ObservableObject {
     }
 
     func addRandomTripsToFirestore() {
+        var trips: [Trip]  = []
         let cities = ["San Franc.", "New York", "Almeria", "Seoul", "Sofia", "Budapest", "Tokyo", "Paris"]
         let cityImages = ["San Franc.": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/elle-los-angeles02-1559906859.jpg", "New York": "https://media.timeout.com/images/105124812/image.jpg", "Almeria": "https://media.traveler.es/photos/61375dc1bae07f0d8a49206d/master/w_1600%2Cc_limit/209774.jpg", "Seoul": "https://media.cntraveler.com/photos/6123f6bb7dfe5dff926c7675/3:2/w_2529,h_1686,c_limit/South%20Korea_GettyImages-1200320719.jpg", "Sofia": "https://www.adonde-y-cuando.es/site/images/illustration/oualler/bulgarie-sofia_702.jpg", "Budapest": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/budapest-danubio-parlamento-1552491234.jpg", "Tokyo": "https://planetofhotels.com/guide/sites/default/files/styles/node__blog_post__bp_banner/public/live_banner/Tokyo.jpg", "Paris": "https://elpachinko.com/wp-content/uploads/2019/03/10-lugares-imprescindibles-que-visitar-en-Par%C3%ADs.jpg"]
         let cityCoordinates = ["San Franc.": CLLocationCoordinate2D(latitude: 37.773972, longitude: -122.431297), "New York": CLLocationCoordinate2D(latitude: 40.730610, longitude: -73.935242), "Almeria": CLLocationCoordinate2D(latitude: 36.838139, longitude: -2.459740), "Seoul": CLLocationCoordinate2D(latitude: 37.532600, longitude: 127.024612), "Sofia": CLLocationCoordinate2D(latitude: 42.698334, longitude: 23.319941), "Budapest": CLLocationCoordinate2D(latitude: 47.497913, longitude: 19.0402362), "Tokyo": CLLocationCoordinate2D(latitude: 35.652832, longitude: 139.839478), "Paris": CLLocationCoordinate2D(latitude: 2.349014, longitude: 48.864716)] as [String: CLLocationCoordinate2D]
@@ -233,9 +249,10 @@ class MainViewModel: ObservableObject {
                 originCoordinate: cityCoordinates[fromCity] ?? CLLocationCoordinate2D(),
                 destinationCoordinate: cityCoordinates[toCity] ?? CLLocationCoordinate2D()
             )
-            print("SUBIENDO TRIP:", trip)
-            createTrip(trip: trip)
+            trips.append(trip)
         }
+
+        createTrips(trips)
     }
 
     func bookmarkTrip(tripID: String) {
@@ -273,15 +290,16 @@ class MainViewModel: ObservableObject {
         }
     }
 
-    func connectMQTT() {
-        let mqttClient = CocoaMQTT(clientID: MQTTClientId, host: MQTTHost, port: UInt16(MQTTPort)!)
+    func connectMQTT(startedByDev: Bool = false) {
+        mqttClient.disconnect()
+        mqttClient = CocoaMQTT(clientID: MQTTClientId, host: MQTTHost, port: UInt16(MQTTPort) ?? 1884)
         _ = mqttClient.connect()
         mqttClient.didConnectAck = { _, ack in
             print("didConnectAck closure called with ack: \(ack.rawValue)")
             if ack == .accept {
-                print("Connection established successfully.")
-                mqttClient.subscribe(self.MQTTTopic)
-                mqttClient.didReceiveMessage = { _, message, _ in
+                if startedByDev { self.alertUser("Connected to MQTT.")}
+                self.mqttClient.subscribe(self.MQTTTopic)
+                self.mqttClient.didReceiveMessage = { _, message, _ in
                     let content = UNMutableNotificationContent()
                     content.title = "Attention Explorer!"
                     content.subtitle = message.string ?? ""
@@ -291,9 +309,10 @@ class MainViewModel: ObservableObject {
                     UNUserNotificationCenter.current().add(request)
                 }
             } else {
-                print("Failed to establish connection. Acknowledgment: \(ack.rawValue)")
+                self.alertUser("There was an issue connecting to MQTT.")
             }
         }
+
     }
 
     func requestNotif() {
