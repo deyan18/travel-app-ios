@@ -26,6 +26,8 @@ class MainViewModel: ObservableObject {
     @Published var hideTabBar = false
 
     private var usersListener: ListenerRegistration?
+    private var tripsListener: ListenerRegistration?
+
 
     func fetchCurrentUser() {
         guard let userUID = FirebaseManager.shared.auth.currentUser?.uid else { return }
@@ -127,14 +129,14 @@ class MainViewModel: ObservableObject {
                         let user = User(UID: userData.uid, email: userData.email ?? "", name: userData.displayName ?? "", pfpURL: userData.photoURL?.absoluteString ?? "")
                         self.saveUserData(user)
                         self.fetchCurrentUser()
-
+                        self.fetchTrips()
                     }
                 }
 
                 self.signedIn = true
 
                 self.fetchCurrentUser()
-                
+                self.fetchTrips()
 
             }
 
@@ -185,12 +187,6 @@ class MainViewModel: ObservableObject {
         })
     }
 
-    func isGoogleUser() -> Bool{
-        let providerId = Auth.auth().currentUser?.providerData.first?.providerID
-
-        return providerId == "google.com"
-    }
-
     func createTrip(trip: Trip) {
         do{
             try FirebaseManager.shared.firestore.collection("Trips").document(trip.UID).setData(from: trip, merge: true)
@@ -202,7 +198,9 @@ class MainViewModel: ObservableObject {
     }
 
     func fetchTrips() {
-        FirebaseManager.shared.firestore
+        tripsListener?.remove()
+
+        tripsListener = FirebaseManager.shared.firestore
             .collection("Trips")
             .order(by: "startDate")
             .addSnapshotListener { querySnapshot, error in
