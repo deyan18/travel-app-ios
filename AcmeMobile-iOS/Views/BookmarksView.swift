@@ -24,6 +24,7 @@ struct BookmarksView: View {
                 if vm.currentUser?.bookmarkedTrips.contains(trip.UID) ?? false {
                     NavigationLink(destination: TripDetailView(trip: trip)) {
                         tripItem(trip: trip)
+                            .frame(maxWidth: 600)
                     }
                     .accentColor(.primary)
                 }

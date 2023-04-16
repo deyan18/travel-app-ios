@@ -48,7 +48,9 @@ struct HomeView: View {
                     searchBar(text: $searchDestinationText, hint: "Destination") {
                     }
                 }
+                .frame(maxWidth: 600)
                 HStack {
+                    Spacer()
                     filterButton(title: "Filters", icon: "slider.horizontal.3", isOn: $isFiltersOn) {
                         showFiltersSheet = true
                     }
@@ -58,7 +60,9 @@ struct HomeView: View {
                             isCompactOn.toggle()
                         }
                     }
+                    Spacer()
                 }
+
             }
             .padding(.horizontal)
             .padding(.top, 5)
@@ -84,6 +88,7 @@ struct HomeView: View {
                                 }
                             } else {
                                 tripItem(trip: trip, isCompactOn: $isCompactOn)
+                                    .frame(maxWidth: 600)
                             }
                         }
                         .accentColor(.primary)
@@ -102,6 +107,7 @@ struct HomeView: View {
                 .font(.title2)
                 .fontDesign(.rounded)
                 .fontWeight(.medium)
+            Spacer()
             DatePicker(selection: $startDate, in: Date.now..., displayedComponents: .date) {
                 Text("Start date: ")
             }.onChange(of: startDate, perform: { _ in
@@ -120,6 +126,8 @@ struct HomeView: View {
                 MultiValueSlider(value: $valueArray, minimumValue: vm.trips.min(by: { $0.price < $1.price })?.price ?? 0.0, maximumValue: vm.trips.max(by: { $0.price < $1.price })?.price ?? 0.0, snapStepSize: 1.0, valueLabelPosition: .top, orientation: .horizontal, outerTrackColor: UIColor(Color.gray), valueLabelFormatter: PRICE_FORMATTER)
                     .frame(height: 100)
             }
+
+            Spacer()
 
             HStack {
                 if isFiltersOn {
@@ -143,7 +151,9 @@ struct HomeView: View {
                 }
             }
 
-        }.padding()
+        }
+        .frame(maxWidth: 350)
+        .padding()
             .onAppear {
                 if valueArray == [-1.0, -1.0] {
                     valueArray = [vm.trips.min(by: { $0.price < $1.price })?.price ?? 0.0, vm.trips.max(by: { $0.price < $1.price })?.price ?? 0.0]

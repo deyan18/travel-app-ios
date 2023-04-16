@@ -56,7 +56,9 @@ struct LoginView: View {
 
                 bottomButtons
 
-            }.padding(35)
+            }
+            .frame(maxWidth: 600)
+            .padding(35)
         }
         .frame(maxHeight: .infinity)
     }

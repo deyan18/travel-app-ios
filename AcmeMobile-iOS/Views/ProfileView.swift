@@ -47,6 +47,7 @@ struct ProfileView: View {
                 if vm.currentUser?.purchasedTrips.contains(trip.UID) ?? false {
                     NavigationLink(destination: TripDetailView(trip: trip)) {
                         tripItem(trip: trip)
+                            .frame(maxWidth: 600)
                     }
                     .accentColor(.primary)
                 }

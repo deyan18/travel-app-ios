@@ -26,7 +26,7 @@ struct SettingsView: View {
                 userFields
                 bottomButtons
                 devSettings
-            }
+            }.frame(maxWidth: 600)
         }
         .padding(.horizontal)
         .onAppear(perform: {

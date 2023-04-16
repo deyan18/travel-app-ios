@@ -28,7 +28,9 @@ struct TripDetailView: View {
             mapView
                 .padding(.bottom)
 
-        }.padding(.horizontal)
+        }
+        .frame(maxWidth: 600)
+        .padding(.horizontal)
             .scrollIndicators(.hidden)
             .onAppear {
                 Task {
