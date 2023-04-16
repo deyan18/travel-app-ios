@@ -73,10 +73,16 @@ struct HomeView: View {
     }
 
     var tripsList: some View {
+
+
         ScrollView {
             LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
                 ForEach(vm.trips) { trip in
-                    if trip.startDate > Date.now {
+                    let isOriginMatching = searchOriginText.isEmpty || trip.origin.localizedCaseInsensitiveContains(searchOriginText)
+                    let isDestinationMatching = searchDestinationText.isEmpty || trip.destination.localizedCaseInsensitiveContains(searchDestinationText)
+
+                    if trip.startDate > Date.now && isOriginMatching && isDestinationMatching{
+
                         NavigationLink(destination: TripDetailView(trip: trip)) {
                             if isFiltersOn {
                                 let isEndDateFilterValid = !isEndDateFilterChanged || trip.endDate <= endDate

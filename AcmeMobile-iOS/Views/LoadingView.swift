@@ -19,7 +19,7 @@ struct LoadingView: View {
 
                 ProgressView()
                     .padding(15)
-                    .background(.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
         }
         .animation(.easeInOut(duration: 0.25), value: vm.isLoading)
