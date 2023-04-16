@@ -77,32 +77,24 @@ struct HomeView: View {
 
         ScrollView {
             LazyVGrid(columns: isCompactOn ? [GridItem(.adaptive(minimum: 160, maximum: 220))] : [GridItem(.flexible())]) {
-                ForEach(vm.trips) { trip in
+                ForEach(vm.trips.filter { trip in
                     let isOriginMatching = searchOriginText.isEmpty || trip.origin.localizedCaseInsensitiveContains(searchOriginText)
                     let isDestinationMatching = searchDestinationText.isEmpty || trip.destination.localizedCaseInsensitiveContains(searchDestinationText)
+                    let isStartDateValid = !isFiltersOn || (!isStartDateFilterChanged || trip.startDate >= startDate)
+                    let isEndDateValid = !isFiltersOn || (!isEndDateFilterChanged || trip.endDate <= endDate)
+                    let isPriceRangeValid = !isFiltersOn || (trip.price >= valueArray[0] && trip.price <= valueArray[1])
 
-                    if trip.startDate > Date.now && isOriginMatching && isDestinationMatching{
-
-                        NavigationLink(destination: TripDetailView(trip: trip)) {
-                            if isFiltersOn {
-                                let isEndDateFilterValid = !isEndDateFilterChanged || trip.endDate <= endDate
-                                let isStartDateFilterValid = !isStartDateFilterChanged || trip.startDate >= startDate
-                                let isPriceRangeValid = trip.price >= valueArray[0] && trip.price <= valueArray[1]
-
-                                if (isFiltersOn && isEndDateFilterValid && isStartDateFilterValid && isPriceRangeValid) || !isFiltersOn {
-                                    tripItem(trip: trip, isCompactOn: $isCompactOn)
-                                }
-                            } else {
-                                tripItem(trip: trip, isCompactOn: $isCompactOn)
-                                    .frame(maxWidth: 600)
-                            }
-                        }
-                        .accentColor(.primary)
+                    return trip.startDate > Date.now && isOriginMatching && isDestinationMatching && isStartDateValid && isEndDateValid && isPriceRangeValid
+                }) { trip in
+                    NavigationLink(destination: TripDetailView(trip: trip)) {
+                        tripItem(trip: trip, isCompactOn: $isCompactOn)
                     }
+                    .accentColor(.primary)
                 }
             }
             .padding(.top, 100)
         }
+
         .scrollIndicators(.hidden)
         .padding(.horizontal)
     }
