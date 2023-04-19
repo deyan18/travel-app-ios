@@ -58,7 +58,7 @@ struct SettingsView: View {
                 customTextField(title: "MQTT Port", text: $vm.MQTTPort, backgroundColor: textFieldBgColor, isNumbersOnly: true)
                 customTextField(title: "MQTT Topic", text: $vm.MQTTTopic, backgroundColor: textFieldBgColor, isNumbersOnly: true)
                 customButton(title: "Connect to MQTT", backgroundColor: .accentColor, foregroundColor: .white){
-                    vm.isLoading = true
+                    
                     vm.connectMQTT(startedByDev: true)
                 }
                     .padding(.top, 10)
