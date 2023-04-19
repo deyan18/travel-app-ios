@@ -34,7 +34,7 @@ class MainViewModel: ObservableObject {
     private var tripsListener: ListenerRegistration?
 
     func fetchCurrentUser() {
-        fetchTrips()
+        fetchTrips()  
         guard let userUID = FirebaseManager.shared.auth.currentUser?.uid else { return }
 
         usersListener?.remove()
