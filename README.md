@@ -22,24 +22,31 @@ This was not my first time building an iOS app with SwiftUI, but I learned a lot
 
 The iOS travel app comes with a wide range of features to enhance the user experience. Some of the key features include:
 
-- Authentication with email and password using Firebase Authentication for secure and personalized user access.
-- Authentication with Google using Firebase for seamless sign-in with Google accounts.
-- Password recovery with Firebase Authentication.
-- Storing users' profile images in Firebase Storage for easy retrieval and management.
-- Getting trips from Firestore, a NoSQL cloud database, for efficient data retrieval and synchronization.
-- Searching for trips based on origin and destination, allowing users to easily find trips that match their preferences.
-- Filtering trips based on start and end date, enabling users to narrow down their search based on their travel dates.
-- Filtering trips based on price range, allowing users to find trips that fit within their budget.
-- Compact grid view of trips for a visually appealing and organized display of trip options.
-- Accessing a detailed view of a trip to see more information, including a description, temperature of the destination, and a map displaying the origin, destination, and user's current location.
-- Bookmarking trips for easy access to saved trips in the bookmarks view.
-- Purchasing trips, with purchased trips displayed in the user profile for easy reference.
-- Editing user profile to update personal information.
-- Deleting user account, including all associated information, for user convenience.
-- Trips becoming non-available when the start date passes the current date, with non-available trips hidden from the explore view but still accessible if bookmarked. Non-available trips cannot be purchased.
-- App supports notifications using an MQTT connection, enabling real-time notifications for users.
-- App supports iPadOS, adapting to the larger screen size for a seamless experience on iPad.
-- App supports dark mode, providing a visually appealing and comfortable experience for users who prefer a darker interface.
+- User account management
+  - Authentication with email and password using Firebase Authentication for secure and personalized user access.
+  - Authentication with Google using Firebase for seamless sign-in with Google accounts.
+  - Password recovery with Firebase Authentication.
+  - Storing users' profile images in Firebase Storage for easy retrieval and management.
+  - Editing user profile to update personal information.
+  - Deleting user account, including all associated information, for user convenience.
+![User account management screenshots](https://i.imgur.com/VamIDh2.png)
+- Trips management
+  - Getting trips from Firestore, a NoSQL cloud database, for efficient data retrieval and synchronization.
+  - Searching for trips based on origin and destination, allowing users to easily find trips that match their preferences.
+  - Filtering trips based on start and end date, enabling users to narrow down their search based on their travel dates.
+  - Filtering trips based on price range, allowing users to find trips that fit within their budget.
+  - Compact grid view of trips for a visually appealing and organized display of trip options.
+![Trips management screenshots part 1](https://i.imgur.com/yrpDQXy.png)
+  - Accessing a detailed view of a trip to see more information, including a description, temperature of the destination, and a map displaying the origin, destination, and user's current location.
+  - Bookmarking trips for easy access to saved trips in the bookmarks view.
+  - Purchasing trips, with purchased trips displayed in the user profile for easy reference.
+  - Trips becoming non-available when the start date passes the current date, with non-available trips hidden from the explore view but still accessible if bookmarked. Non-available trips cannot be purchased.
+![Trips management screenshots part 2](https://i.imgur.com/XZEUK9I.png)
+- Other features
+  - App supports notifications using an MQTT connection, enabling real-time notifications for users.
+  - App supports iPadOS, adapting to the larger screen size for a seamless experience on iPad.
+  - App supports dark mode, providing a visually appealing and comfortable experience for users who prefer a darker interface.
+![Other features screenshots part 2](https://i.imgur.com/XoEdWSn.jpg)
 
 ## Future Development
 
